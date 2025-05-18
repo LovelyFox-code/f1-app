@@ -14,7 +14,7 @@ It shows a list of F1 champions by season and race winners per season.
 - Handles loading states, errors, and empty data gracefully
 - Built with Next.js 13 (app router), React, and TypeScript
 - Tested with Vitest (unit + component tests)
-- Styled with Tailwind CSS
+- Styled with Module CSS
 
 ---
 
@@ -63,7 +63,7 @@ Project Structure
   /hooks         # Custom React hooks (e.g., API calls)
   /lib           # API clients and utilities
   /context       # React Context providers for global state
-  /styles        # Global styles and Tailwind CSS config
+  /styles        # Global styles and Module CSS config
   /types         # TypeScript types and interfaces
   /tests         # Unit and component tests
 /public      # Static assets (images, favicon)

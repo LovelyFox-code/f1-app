@@ -7,7 +7,7 @@ This project shows F1 World Champions from 2005 onward. It's a fullstack app wit
 ## 📁 Project Structure
 
 ├── backend/ # Express API + MongoDB models  
-├── frontend/ # Next.js 14 app (TypeScript + Tailwind CSS)
+├── frontend/ # Next.js 14 app (TypeScript + Module CSS)
 ├── infrastructure/ # Docker Compose setup  
 └── README.md # You're here
 
@@ -27,7 +27,7 @@ This project shows F1 World Champions from 2005 onward. It's a fullstack app wit
 - Frontend
 
   - Next.js 14 App Router
-  - Tailwind CSS
+  - Module CSS
   - TypeScript
   - Lucide Icons
   - React Context API

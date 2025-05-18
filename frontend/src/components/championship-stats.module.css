@@ -1,0 +1,154 @@
+.card {
+  background-color: var(--background);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border);
+  padding: var(--spacing-lg);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--foreground);
+  display: flex;
+  align-items: center;
+}
+
+.titleIcon {
+  height: 1.25rem;
+  width: 1.25rem;
+  margin-right: var(--spacing-sm);
+  color: var(--primary);
+}
+
+.nationality {
+  font-size: var(--font-size-sm);
+  color: var(--muted-foreground);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.statCard {
+  background-color: var(--accent);
+  padding: var(--spacing-md);
+  border-radius: var(--radius);
+}
+
+.statHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
+}
+
+.statLabel {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.statIcon {
+  height: 1rem;
+  width: 1rem;
+  margin-right: var(--spacing-sm);
+  color: var(--primary);
+}
+
+.statValue {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.statValueSmall {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+}
+
+.divider {
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border);
+}
+
+.bestSeasonHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.bestSeasonIcon {
+  height: 1rem;
+  width: 1rem;
+  margin-right: var(--spacing-sm);
+  color: var(--primary);
+}
+
+.bestSeasonLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.bestSeasonCard {
+  background-color: color-mix(in srgb, var(--secondary) 50%, transparent);
+  padding: var(--spacing-md);
+  border-radius: var(--radius);
+}
+
+.bestSeasonContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.bestSeasonYear {
+  display: flex;
+  align-items: center;
+}
+
+.bestSeasonYearIcon {
+  height: 1rem;
+  width: 1rem;
+  margin-right: var(--spacing-sm);
+}
+
+.bestSeasonWins {
+  display: flex;
+  align-items: center;
+  font-weight: var(--font-weight-medium);
+}
+
+.bestSeasonWinsIcon {
+  height: 1rem;
+  width: 1rem;
+  margin-right: var(--spacing-xs);
+  color: var(--primary);
+}
+
+.bestSeasonPoints {
+  text-align: right;
+  font-size: var(--font-size-sm);
+  color: var(--muted-foreground);
+} 
