@@ -13,6 +13,7 @@ export interface Driver extends BaseEntity {
   familyName: string;
   dateOfBirth: string;
   nationality: string;
+  constructorName?: string;
 }
 
 // Constructor types
@@ -42,7 +43,7 @@ export interface RaceResult {
   position: string;
   positionText: string;
   points: string;
-  round: number;
+  round: string;
   Driver: Driver;
   Constructor: Constructor;
   grid: string;
@@ -68,7 +69,7 @@ export interface RaceResult {
 // Race types
 export interface Race extends BaseEntity {
   season: string;
-  round: number;
+  round: string;
   url: string;
   raceName: string;
   Circuit: {

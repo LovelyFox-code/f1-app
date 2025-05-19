@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import LoadingSpinner from "@/components/loading-spinner";
 import ErrorDisplay from "@/components/error-display";
-import useF1Data from "@/hooks/use-f1-data";
 import NavBar from "@/components/navbar";
 import RaceResultsSection from "./components/race-results-section";
 import ChampionStatsSection from "./components/champion-stats-section";
@@ -13,119 +12,154 @@ import { Flag } from "lucide-react";
 import styles from "./page.module.css";
 import { ChampionStats, SeasonResult } from "@/types/f1";
 import { RaceResult } from "@/types/api";
+import apiService, {
+  ConstructorStanding,
+  DriverStanding,
+} from "@/services/api";
 
 const SeasonPage = () => {
   const params = useParams();
   const year = params.year as string;
 
-  const { champions, loading, error } = useF1Data();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [seasonData, setSeasonData] = useState<SeasonResult | null>(null);
   const [races, setRaces] = useState<RaceResult[]>([]);
   const [loadingRaces, setLoadingRaces] = useState(false);
   const [raceError, setRaceError] = useState<string | null>(null);
+  const [driverStandings, setDriverStandings] = useState<DriverStanding[]>([]);
+  const [constructorStandings, setConstructorStandings] = useState<
+    ConstructorStanding[]
+  >([]);
+  console.log(constructorStandings);
+  // Fetch all season data
+  useEffect(() => {
+    const fetchSeasonData = async () => {
+      setLoading(true);
+      setError(null);
 
-  const fetchRaceData = useCallback((season: string, seasonData: SeasonResult) => {
+      try {
+        const [, races, driverStandingsData, constructorStandingsData] =
+          await Promise.all([
+            apiService.getSeason(year),
+            apiService.getRaces(year),
+            apiService.getDriverStandings(year),
+            apiService.getConstructorStandings(year).catch(() => []), // TODO:Handle case where constructor standings are not available
+          ]);
+
+        // Get champion from driver standings
+        const champion = driverStandingsData[0]?.Driver;
+        const championConstructor = driverStandingsData[0]?.Constructors?.[0];
+
+        if (!champion || !championConstructor) {
+          throw new Error("Champion data not available");
+        }
+
+        setSeasonData({
+          season: year,
+          champion: {
+            givenName: champion.givenName,
+            familyName: champion.familyName,
+            nationality: champion.nationality,
+            constructorName: championConstructor.name,
+          },
+          rounds: races.length,
+        });
+
+        setDriverStandings(driverStandingsData);
+        setConstructorStandings(constructorStandingsData);
+      } catch (err) {
+        console.error("Error fetching season data:", err);
+        setError("Failed to load season data");
+        setSeasonData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (year) {
+      fetchSeasonData();
+    }
+  }, [year]);
+
+  const fetchRaceResults = useCallback(async (season: string) => {
     setLoadingRaces(true);
     setRaceError(null);
 
-    let timeoutId: NodeJS.Timeout;
-
     try {
-      timeoutId = setTimeout(() => {
-        const mockRaces: RaceResult[] = Array(seasonData.rounds)
-          .fill(0)
-          .map((_, index) => ({
-            number: (index + 1).toString(),
-            position: "1",
-            positionText: "1",
-            points: "25",
-            round: index + 1,
-            Driver: {
-              driverId: `driver-${index}`,
-              permanentNumber: (index + 1).toString(),
-              code: "MOCK",
-              givenName: seasonData.champion.givenName,
-              familyName: seasonData.champion.familyName,
-              dateOfBirth: "1990-01-01",
-              nationality: seasonData.champion.nationality,
-              id: `driver-${index}`,
-              url: `https://example.com/driver-${index}`,
-            },
-            Constructor: {
-              constructorId: `constructor-${index}`,
-              name: seasonData.champion.constructorName,
-              nationality: "Unknown",
-              id: `constructor-${index}`,
-              url: `https://example.com/constructor-${index}`,
-            },
-            grid: "1",
-            laps: "50",
-            status: "Finished",
-            Time: {
-              millis: "3600000",
-              time: "1:00:00.000",
-            },
-            FastestLap: {
-              rank: "1",
-              lap: "30",
-              Time: {
-                time: "1:30.000",
-              },
-              AverageSpeed: {
-                units: "kph",
-                speed: "200",
-              },
-            },
-          }));
+      // First get the races for the season
+      const seasonRaces = await apiService.getRaces(season);
 
-        setRaces(mockRaces);
-        setLoadingRaces(false);
-      }, 500);
+      if (seasonRaces.length === 0) {
+        setRaceError("No races found for this season");
+        return;
+      }
+
+      // Then get results for each race
+      const resultsPerRound = await Promise.all(
+        seasonRaces.map(async (race) => {
+          try {
+            const results = await apiService.getRaceResults(season, race.round);
+            return results.map((result) => ({
+              ...result,
+              round: race.round,
+              raceName: race.raceName,
+              date: race.date,
+              Circuit: race.Circuit,
+            }));
+          } catch (err) {
+            console.error(
+              `Error fetching results for round ${race.round}:`,
+              err
+            );
+            return [];
+          }
+        })
+      );
+
+      const allResults = resultsPerRound.flat();
+      if (allResults.length === 0) {
+        setRaceError("No race results available for this season");
+      } else {
+        setRaces(allResults);
+      }
     } catch (err) {
-      console.error("Error fetching race data:", err);
-      setRaceError("Failed to load race data");
+      console.error("Error fetching race results:", err);
+      setRaceError("Failed to load race results");
+    } finally {
       setLoadingRaces(false);
     }
-
-    return () => clearTimeout(timeoutId);
   }, []);
 
+  // Fetch race results when season data is available
   useEffect(() => {
-    if (champions.length > 0 && year) {
-      const foundSeason = champions.find((s) => s.season === year);
-      if (foundSeason) {
-        setSeasonData(foundSeason);
-        const cleanup = fetchRaceData(year, foundSeason);
-        return cleanup;
-      } else {
-        setSeasonData(null);
-      }
+    if (seasonData) {
+      fetchRaceResults(year);
     }
-  }, [champions, year, fetchRaceData]);
+  }, [year, seasonData, fetchRaceResults]);
 
   if (loading) return <LoadingSpinner />;
-
   if (error) return <ErrorDisplay message={error} />;
-
   if (!seasonData) return <ErrorDisplay message={`Season ${year} not found`} />;
 
+  // Calculate champion stats from standings
   const championStats: ChampionStats = {
     driver: {
       givenName: seasonData.champion.givenName,
       familyName: seasonData.champion.familyName,
       nationality: seasonData.champion.nationality,
-      totalChampionships: 1,
-      totalRaceWins: Math.floor(seasonData.rounds * 0.6),
-      totalPodiums: Math.floor(seasonData.rounds * 0.8),
+      totalChampionships: 1, // TODO: This could be calculated from historical data
+      totalRaceWins: parseInt(driverStandings[0]?.wins || "0"),
+      totalPodiums: Math.floor(seasonData.rounds * 0.8), // TODO:This could be calculated from race results
       bestSeason: {
         year: seasonData.season,
-        wins: Math.floor(seasonData.rounds * 0.6),
-        points: Math.floor(seasonData.rounds * 25 * 0.7),
+        wins: parseInt(driverStandings[0]?.wins || "0"),
+        points: parseInt(driverStandings[0]?.points || "0"),
       },
     },
     constructor: {
       name: seasonData.champion.constructorName,
-      totalChampionships: 3,
+      totalChampionships: 3, // TODO: This could be calculated from historical data
     },
   };
 

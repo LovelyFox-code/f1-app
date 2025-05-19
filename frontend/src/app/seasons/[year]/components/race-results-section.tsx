@@ -20,6 +20,8 @@ const RaceResultsSection = ({
   races,
   champion,
 }: RaceResultsSectionProps) => {
+  console.log("races:", races);
+  console.log("champion: ", champion);
   if (loading) {
     return (
       <div className={styles.loadingContainer}>

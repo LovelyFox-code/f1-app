@@ -7,7 +7,7 @@ const mockDrivers = [
         familyName: "Hamilton",
         dateOfBirth: "1985-01-07",
         nationality: "British",
-        season: "2023"
+        season: "2025"
     }
 ];
 

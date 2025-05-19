@@ -57,7 +57,4 @@ const SeasonSchema = new mongoose.Schema(
   }
 );
 
-// Index for season searches
-SeasonSchema.index({ season: 1 });
-
 export const Season = mongoose.model("Season", SeasonSchema); 
