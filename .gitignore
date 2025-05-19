@@ -23,7 +23,7 @@
 **/out
 **/build
 
-/.env*
+**/.env*
 !.env.example
 
 # Vercel deployment files
