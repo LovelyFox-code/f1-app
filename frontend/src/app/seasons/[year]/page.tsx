@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import LoadingSpinner from "@/components/loading-spinner";
 import ErrorDisplay from "@/components/error-display";
@@ -10,8 +10,9 @@ import RaceResultsSection from "./components/race-results-section";
 import ChampionStatsSection from "./components/champion-stats-section";
 import SeasonHeader from "./components/season-header";
 import { Flag } from "lucide-react";
-import { RaceResult, SeasonResult, ChampionStats } from "@/types/f1";
 import styles from "./page.module.css";
+import { ChampionStats, SeasonResult } from "@/types/f1";
+import { RaceResult } from "@/types/api";
 
 const SeasonPage = () => {
   const params = useParams();
@@ -23,51 +24,58 @@ const SeasonPage = () => {
   const [loadingRaces, setLoadingRaces] = useState(false);
   const [raceError, setRaceError] = useState<string | null>(null);
 
-  const fetchRaceData = async (season: string, seasonData: SeasonResult) => {
+  const fetchRaceData = useCallback((season: string, seasonData: SeasonResult) => {
     setLoadingRaces(true);
     setRaceError(null);
 
+    let timeoutId: NodeJS.Timeout;
+
     try {
-      setTimeout(() => {
+      timeoutId = setTimeout(() => {
         const mockRaces: RaceResult[] = Array(seasonData.rounds)
           .fill(0)
           .map((_, index) => ({
+            number: (index + 1).toString(),
+            position: "1",
+            positionText: "1",
+            points: "25",
             round: index + 1,
-            raceName: `${season} Grand Prix ${index + 1}`,
-            date: `${season}-${(3 + index).toString().padStart(2, "0")}-${(
-              5 +
-              index * 2
-            )
-              .toString()
-              .padStart(2, "0")}`,
-            Circuit: {
-              circuitName: `Circuit ${index + 1}`,
-              Location: {
-                country: [
-                  "Italy",
-                  "Spain",
-                  "Monaco",
-                  "UK",
-                  "Germany",
-                  "France",
-                  "Belgium",
-                  "Japan",
-                  "USA",
-                ][index % 9],
+            Driver: {
+              driverId: `driver-${index}`,
+              permanentNumber: (index + 1).toString(),
+              code: "MOCK",
+              givenName: seasonData.champion.givenName,
+              familyName: seasonData.champion.familyName,
+              dateOfBirth: "1990-01-01",
+              nationality: seasonData.champion.nationality,
+              id: `driver-${index}`,
+              url: `https://example.com/driver-${index}`,
+            },
+            Constructor: {
+              constructorId: `constructor-${index}`,
+              name: seasonData.champion.constructorName,
+              nationality: "Unknown",
+              id: `constructor-${index}`,
+              url: `https://example.com/constructor-${index}`,
+            },
+            grid: "1",
+            laps: "50",
+            status: "Finished",
+            Time: {
+              millis: "3600000",
+              time: "1:00:00.000",
+            },
+            FastestLap: {
+              rank: "1",
+              lap: "30",
+              Time: {
+                time: "1:30.000",
+              },
+              AverageSpeed: {
+                units: "kph",
+                speed: "200",
               },
             },
-            Results: [
-              {
-                position: "1",
-                Driver: {
-                  givenName: seasonData.champion.givenName,
-                  familyName: seasonData.champion.familyName,
-                },
-                Constructor: {
-                  name: seasonData.champion.constructorName,
-                },
-              },
-            ],
           }));
 
         setRaces(mockRaces);
@@ -78,19 +86,22 @@ const SeasonPage = () => {
       setRaceError("Failed to load race data");
       setLoadingRaces(false);
     }
-  };
+
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   useEffect(() => {
     if (champions.length > 0 && year) {
       const foundSeason = champions.find((s) => s.season === year);
       if (foundSeason) {
         setSeasonData(foundSeason);
-        fetchRaceData(year, foundSeason);
+        const cleanup = fetchRaceData(year, foundSeason);
+        return cleanup;
       } else {
         setSeasonData(null);
       }
     }
-  }, [champions, year]);
+  }, [champions, year, fetchRaceData]);
 
   if (loading) return <LoadingSpinner />;
 

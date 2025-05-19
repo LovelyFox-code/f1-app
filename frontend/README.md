@@ -55,7 +55,7 @@ npm start
 
 Project Structure
 
-```
+```bash
 /src
   /app           # Next.js app router pages and layouts
     /seasons     # Season list and season-specific race winners

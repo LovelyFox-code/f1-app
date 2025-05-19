@@ -1,8 +1,8 @@
 import ErrorDisplay from "@/components/error-display";
 import LoadingSpinner from "@/components/loading-spinner";
 import RaceCard from "@/components/race-card";
-import { RaceResult } from "@/types/f1";
 import styles from "./race-results-section.module.css";
+import { RaceResult } from "@/types/api";
 
 interface RaceResultsSectionProps {
   loading: boolean;
