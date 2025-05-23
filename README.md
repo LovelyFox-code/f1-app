@@ -66,8 +66,6 @@ formula-1/
 - `GET /api/seasons` - Get all seasons from 2005 to present
 - `GET /api/seasons/:season` - Get details for a specific season
 - `GET /api/seasons/:season/races` - Get all races for a season
-- `GET /api/seasons/:season/drivers` - Get all drivers for a season
-- `GET /api/seasons/:season/constructors` - Get all constructors for a season
 
 ## Development
 
