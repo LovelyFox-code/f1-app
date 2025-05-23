@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Driver, Race, Season } from "../models/index.ts";
+import { Race, Season } from "../models/index.ts";
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -28,36 +28,6 @@ export const fetchAndStoreSeasons = async () => {
         );
     }
     console.log("Seasons stored");
-};
-
-export const fetchAndStoreDriver = async () => {
-    try {
-        const { data } = await axios.get(`${baseURL}/drivers.json?limit=1000`);
-        const drivers = data.MRData.DriverTable.Drivers;
-
-        for (const d of drivers) {
-            await Driver.findOneAndUpdate(
-                { driverId: d.driverId },
-                {
-                    driverId: d.driverId,
-                    givenName: d.givenName,
-                    familyName: d.familyName,
-                    nationality: d.nationality,
-                    dateOfBirth: d.dateOfBirth,
-                    url: d.url,
-                },
-                { upsert: true, new: true }
-            );
-        }
-
-        console.log("Drivers stored");
-    } catch (err) {
-        if (err instanceof Error) {
-            console.error("Error fetching drivers:", err.message);
-        } else {
-            console.error("Unknown error fetching drivers:", err);
-        }
-    }
 };
 
 // Fetch and store races for filtered seasons
@@ -124,10 +94,9 @@ export const fetchAndStoreRaces = async () => {
                         rounds: rounds
                     }
                 );
-                console.log(`Rounds in the  ${season}`);
-                console.log(`ROUNDS: ${rounds}`)
+                console.log(`${rounds} rounds in the  ${season}`);
             } else {
-                console.warn(`No champion data for season ${season}`);
+                console.warn(`No rounds data for season ${season}`);
             }
 
             await Season.updateOne({ season }, { rounds: races.length });

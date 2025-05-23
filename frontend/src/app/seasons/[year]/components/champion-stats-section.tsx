@@ -1,3 +1,4 @@
+import React from "react";
 import ChampionshipStats from "@/components/championship-stats";
 import { ChampionStats } from "@/types/api";
 

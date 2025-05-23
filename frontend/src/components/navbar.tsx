@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import { Flag, Home } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";

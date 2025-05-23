@@ -1,3 +1,4 @@
+import React from "react";
 import { Flag, Trophy } from "lucide-react";
 import { RaceResult } from "@/types/api";
 import styles from "./race-card.module.css";

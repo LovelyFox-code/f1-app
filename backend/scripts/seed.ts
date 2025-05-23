@@ -9,7 +9,7 @@ import {
     fetchAndStoreRaces,
     fetchAndStoreChampions,
 } from "../services/ergast.ts";
-import { Driver, Race, Season } from "../models/index.js";
+import { Race, Season } from "../models/index.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -29,7 +29,6 @@ const importData = async () => {
 
 const destroyData = async () => {
     try {
-        await Driver.deleteMany({});
         await Season.deleteMany({});
         await Race.deleteMany({});
         console.log("Data destroyed");

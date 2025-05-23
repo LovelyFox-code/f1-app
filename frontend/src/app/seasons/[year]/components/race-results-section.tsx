@@ -1,3 +1,4 @@
+import React from "react";
 import ErrorDisplay from "@/components/error-display";
 import LoadingSpinner from "@/components/loading-spinner";
 import RaceCard from "@/components/race-card";
@@ -49,8 +50,8 @@ const RaceResultsSection = ({
   });
   return (
     <div className={styles.grid}>
-      {sortedRaces.map((race) => (
-        <RaceCard key={race.id} race={race} champion={champion} />
+      {sortedRaces.map((race, index) => (
+        <RaceCard key={race.id || index} race={race} champion={champion} />
       ))}
     </div>
   );

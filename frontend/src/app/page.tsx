@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Trophy, ChevronDown, CalendarDays } from "lucide-react";
 import { Button } from "@/components/button";
 import LoadingSpinner from "@/components/loading-spinner";
@@ -8,33 +8,17 @@ import ErrorDisplay from "@/components/error-display";
 import SeasonCard from "@/components/season-card";
 import NavBar from "@/components/navbar";
 import styles from "./page.module.css";
-import { Season } from "@/types/api";
-import apiService from "@/services/api";
-import { useSeasonRaceResults } from "@/hooks/use-season-race-results";
+import { useSeasons } from "@/hooks/use-seasons";
 
 const HomePage = () => {
   const [visibleSeasons, setVisibleSeasons] = useState(6);
-  const [seasons, setSeasons] = useState<Season[]>([]);
-  console.log("seasons in teh page: ", seasons);
-  useEffect(() => {
-    const fetchSeasonsData = async () => {
-      try {
-        const seasonsData = await apiService.getSeasons();
-        setSeasons(seasonsData);
-      } catch (error) {
-        console.error("Error fetching seasons:", error);
-      }
-    };
-
-    fetchSeasonsData();
-  }, []);
-  const { isLoading: loading, error } = useSeasonRaceResults("2022");
+  const { data: seasons = [], isLoading, error } = useSeasons();
 
   const handleLoadMore = () => {
     setVisibleSeasons((prev) => prev + 6);
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className={styles.loadingContainer}>
         <LoadingSpinner size="lg" />

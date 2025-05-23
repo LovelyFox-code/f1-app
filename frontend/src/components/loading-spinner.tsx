@@ -1,3 +1,4 @@
+import React from "react";
 import { Loader2 } from "lucide-react";
 import styles from "./loading-spinner.module.css";
 import clx from "clsx";

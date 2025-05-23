@@ -1,3 +1,4 @@
+import React from "react";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "./button";
 import { useTheme } from "../providers/theme-provider";
@@ -18,8 +19,8 @@ const ThemeToggle = () => {
       className={styles.toggle}
       aria-label="Toggle theme"
     >
-      <Sun className={styles.sun} />
-      <Moon className={styles.moon} />
+      <Sun className={styles.sun} data-testid="sun-icon" />
+      <Moon className={styles.moon} data-testid="moon-icon" />
       <span className={styles.srOnly}>Toggle theme</span>
     </Button>
   );

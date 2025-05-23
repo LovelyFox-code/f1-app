@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import { Calendar, ChevronRight } from "lucide-react";
 import styles from "./season-card.module.css";
