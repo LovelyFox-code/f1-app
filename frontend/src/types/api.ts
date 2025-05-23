@@ -39,83 +39,82 @@ export interface Circuit extends BaseEntity {
 
 // Race result types
 export interface RaceResult {
-  number: string;
+  id: string;
+  round: number;
   position: string;
-  positionText: string;
   points: string;
-  round: string;
-  Driver: Driver;
-  Constructor: Constructor;
-  grid: string;
-  laps: string;
-  status: string;
-  Time?: {
-    millis: string;
-    time: string;
+  driver: {
+    givenName: string;
+    familyName: string;
+    nationality: string;
   };
-  FastestLap?: {
+  constructor: {
+    name: string;
+  };
+  grid: string;
+  status: string;
+  laps: string;
+  time?: string;
+  fastestLap?: {
     rank: string;
     lap: string;
-    Time: {
-      time: string;
-    };
-    AverageSpeed: {
-      units: string;
-      speed: string;
-    };
+    time: string;
+    averageSpeed: string;
   };
 }
 
 // Race types
 export interface Race extends BaseEntity {
   season: string;
-  round: string;
-  url: string;
+  round: number;
   raceName: string;
-  Circuit: {
+  circuit: {
     circuitName: string;
-    Location: {
+    location: {
       country: string;
     };
   };
   date: string;
   time: string;
-  Results: {
+  results: {
     position: string;
-    Driver: {
+    points: string;
+    driver: {
       givenName: string;
       familyName: string;
+      nationality: string;
     };
-    Constructor: {
+    constructor: {
       name: string;
     };
+    grid: string;
+    status: string;
+    laps: string;
+    time?: {
+      time: string;
+    };
+    fastestLap?: {
+      rank: string;
+      lap: string;
+      time?: {
+        time: string;
+      };
+    };
   }[];
+  winnerIsChampion?: boolean;
 }
 
 // Season types
-export interface SeasonStandings {
-  position: string;
-  positionText: string;
-  points: string;
-  wins: string;
-  Driver: Driver;
-  Constructor: Constructor;
-}
-
-export interface ConstructorStandings {
-  position: string;
-  positionText: string;
-  points: string;
-  wins: string;
-  Constructor: Constructor;
-}
-
-export interface Season extends BaseEntity {
+export interface Season {
+  _id: string;
   season: string;
-  url: string;
-  races: Race[];
-  driverStandings: SeasonStandings[];
-  constructorStandings: ConstructorStandings[];
+  rounds: number;
+  champion: {
+    givenName: string;
+    familyName: string;
+    nationality: string;
+    constructor: string;
+  };
 }
 
 // API Response types
@@ -161,4 +160,39 @@ export interface RaceQueryParams extends PaginationParams {
   circuitId?: string;
   driverId?: string;
   constructorId?: string;
-} 
+}
+
+export interface ChampionStats {
+  driver: {
+    givenName: string;
+    familyName: string;
+    nationality: string;
+    totalChampionships: number;
+    totalRaceWins: number;
+    totalPodiums: number;
+    bestSeason: {
+      year: string;
+      wins: number;
+      points: number;
+    };
+  };
+  constructor: {
+    name: string;
+    totalChampionships: number;
+  };
+}
+
+export interface DriverStanding {
+  position: string;
+  points: string;
+  wins: string;
+  driver: Driver;
+  constructors: Constructor[];
+}
+
+export interface ConstructorStanding {
+  position: string;
+  points: string;
+  wins: string;
+  constructor: Constructor;
+}

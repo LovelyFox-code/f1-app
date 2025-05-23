@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "../styles/variables.css";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
+import QueryProvider from "@/providers/query-provider";
 import styles from "./layout.module.css";
 import clsx from "clsx";
 
@@ -15,7 +16,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => (
       <meta name="viewport" content="width=device-width, initial-scale=1" />
     </head>
     <body className={clsx(styles.body, "font-barlow")}>
-      <ThemeProvider>{children}</ThemeProvider>
+      <QueryProvider>
+        <ThemeProvider>{children}</ThemeProvider>
+      </QueryProvider>
     </body>
   </html>
 );

@@ -1,17 +1,5 @@
 import { useState, useEffect } from "react";
-
-interface Champion {
-  givenName: string;
-  familyName: string;
-  constructorName: string;
-  nationality: string;
-}
-
-interface SeasonResult {
-  season: string;
-  champion: Champion;
-  rounds: number;
-}
+import { SeasonResult } from "@/types/api";
 
 const useF1Data = () => {
   const [champions, setChampions] = useState<SeasonResult[]>([]);
@@ -28,84 +16,117 @@ const useF1Data = () => {
         {
           season: "2022",
           champion: {
-            givenName: "Max",
-            familyName: "Verstappen",
-            constructorName: "Red Bull",
-            nationality: "Dutch"
+            driver: {
+              givenName: "Max",
+              familyName: "Verstappen",
+              nationality: "Dutch"
+            },
+            constructor: {
+              name: "Red Bull"
+            }
           },
           rounds: 22
         },
         {
           season: "2021",
           champion: {
-            givenName: "Max",
-            familyName: "Verstappen",
-            constructorName: "Red Bull",
-            nationality: "Dutch"
+            driver: {
+              givenName: "Max",
+              familyName: "Verstappen",
+              nationality: "Dutch"
+            },
+            constructor: {
+              name: "Red Bull"
+            }
           },
           rounds: 22
         },
         {
           season: "2020",
           champion: {
-            givenName: "Lewis",
-            familyName: "Hamilton",
-            constructorName: "Mercedes",
-            nationality: "British"
+            driver: {
+              givenName: "Lewis",
+              familyName: "Hamilton",
+              nationality: "British"
+            },
+            constructor: {
+              name: "Mercedes"
+            }
           },
           rounds: 17
         },
         {
           season: "2019",
           champion: {
-            givenName: "Lewis",
-            familyName: "Hamilton",
-            constructorName: "Mercedes",
-            nationality: "British"
+            driver: {
+              givenName: "Lewis",
+              familyName: "Hamilton",
+              nationality: "British"
+            },
+            constructor: {
+              name: "Mercedes"
+            }
           },
           rounds: 21
         },
         {
           season: "2018",
           champion: {
-            givenName: "Lewis",
-            familyName: "Hamilton",
-            constructorName: "Mercedes",
-            nationality: "British"
+            driver: {
+              givenName: "Lewis",
+              familyName: "Hamilton",
+              nationality: "British"
+            },
+            constructor: {
+              name: "Mercedes"
+            }
           },
           rounds: 21
         },
         {
           season: "2017",
           champion: {
-            givenName: "Lewis",
-            familyName: "Hamilton",
-            constructorName: "Mercedes",
-            nationality: "British"
+            driver: {
+              givenName: "Lewis",
+              familyName: "Hamilton",
+              nationality: "British"
+            },
+            constructor: {
+              name: "Mercedes"
+            }
           },
           rounds: 20
         },
         {
           season: "2016",
           champion: {
-            givenName: "Nico",
-            familyName: "Rosberg",
-            constructorName: "Mercedes",
-            nationality: "German"
+            driver: {
+              givenName: "Nico",
+              familyName: "Rosberg",
+              nationality: "German"
+            },
+            constructor: {
+              name: "Mercedes"
+            }
           },
           rounds: 21
         },
         {
           season: "2015",
           champion: {
-            givenName: "Lewis",
-            familyName: "Hamilton",
-            constructorName: "Mercedes",
-            nationality: "British"
+            driver: {
+              givenName: "Lewis",
+              familyName: "Hamilton",
+              nationality: "British"
+            },
+            constructor: {
+              name: "Mercedes"
+            }
           },
           rounds: 19
         }
       ];
+
 
       setChampions(mockChampions);
     } catch (err) {

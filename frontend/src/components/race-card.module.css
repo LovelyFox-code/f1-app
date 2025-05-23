@@ -64,13 +64,13 @@
 .divider {
   padding-top: var(--spacing-lg);
   border-top: 1px solid var(--border);
-  margin-top: auto;
 }
 
 .winner {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.25rem;
   padding: var(--spacing-md);
   border-radius: var(--radius);
   transition: all 0.2s ease-in-out;
@@ -104,6 +104,7 @@
   align-items: center;
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-base);
+  gap: 0.25rem;
 }
 
 .winnerNameIcon {

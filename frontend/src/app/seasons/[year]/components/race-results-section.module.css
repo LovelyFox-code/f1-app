@@ -17,8 +17,8 @@
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1444px) {
   .grid {
     grid-template-columns: repeat(3, 1fr);
   }
-} 
+}

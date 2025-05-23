@@ -1,40 +1,89 @@
-# 🏎️ F1 Champions App – Fullstack Monorepo
+# Formula 1 World Champions
 
-This project shows F1 World Champions from 2005 onward. It's a fullstack app with a **Next.js frontend**, a **Node/Express backend**, and **Docker**-based local setup.
+A web application that displays Formula 1 World Champions from 2005 to the present year, along with race winners and championship details.
 
----
+## Features
 
-## 📁 Project Structure
+- View Formula 1 World Champions from 2005 to present
+- See all grand prix winners for each season
+- Highlighted race winners who are also season champions
+- Responsive design for both desktop and mobile
+- Real-time data from the Ergast Developer API
+- Local data persistence with MongoDB
 
-├── backend/ # Express API + MongoDB models  
-├── frontend/ # Next.js 14 app (TypeScript + Module CSS)
-├── infrastructure/ # Docker Compose setup  
-└── README.md # You're here
+## Prerequisites
 
----
+- Docker and Docker Compose
+- Node.js 20 or later (for local development)
 
-## 🚀 Quick Start (Local)
+## Getting Started
 
-1. **Install Docker**  
-   Make sure Docker & Docker Compose are installed.
+1. Clone the repository:
 
-2. **Start fullstack app**
+   ```bash
+   git clone <repository-url>
+   cd formula-1
+   ```
 
-3000
+2. Start the application using Docker Compose:
 
-🧰 Tech Stack
+   ```bash
+   docker-compose up
+   ```
 
-- Frontend
+   This will start:
 
-  - Next.js 14 App Router
-  - Module CSS
-  - TypeScript
-  - Lucide Icons
-  - React Context API
-  - Vitest
+   - Frontend (Next.js) on http://localhost:3000
+   - Backend (Express) on http://localhost:5001
+   - MongoDB on localhost:27017
 
-- Backend
-  - Node.js + Express
-  - MongoDB
-  - Docker & Docker Compose
-  - Vitest
+3. For local development without Docker:
+
+   ```bash
+   # Start the backend
+   cd backend
+   npm install
+   npm run dev
+
+   # Start the frontend
+   cd frontend
+   npm install
+   npm run dev
+   ```
+
+## Project Structure
+
+```
+formula-1/
+├── frontend/           # Next.js frontend application
+├── backend/           # Express.js backend API
+├── infrastructure/    # Infrastructure and deployment configs
+└── docker-compose.yml # Docker Compose configuration
+```
+
+## API Endpoints
+
+- `GET /api/seasons` - Get all seasons from 2005 to present
+- `GET /api/seasons/:season` - Get details for a specific season
+- `GET /api/seasons/:season/races` - Get all races for a season
+- `GET /api/seasons/:season/drivers` - Get all drivers for a season
+- `GET /api/seasons/:season/constructors` - Get all constructors for a season
+
+## Development
+
+### Backend
+
+The backend is built with:
+
+- Express.js
+- TypeScript
+- MongoDB with Mongoose
+- Swagger for API documentation
+
+### Frontend
+
+The frontend is built with:
+
+- Next.js
+- TypeScript
+- Module CSS

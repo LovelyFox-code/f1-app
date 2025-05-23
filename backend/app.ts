@@ -4,16 +4,7 @@ import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
 import path from "path";
 import seasonsRoutes from "./routes/seasons-routes.ts";
-import driversRoutes from "./routes/drivers-routes.ts";
-import constructorsRoutes from "./routes/constructors-routes.ts";
-import resultsRoutes from "./routes/results-routes.ts";
-import standingsRoutes from "./routes/standings-routes.ts";
-import qualifyingRoutes from "./routes/qualifying-routes.ts";
-import pitstopsRoutes from "./routes/pitstops-routes.ts";
-import lapsRoutes from "./routes/laps-routes.ts";
-import statusRoutes from "./routes/status-routes.ts";
 import racesRoutes from "./routes/races-routes.ts";
-
 const app = express();
 
 const __dirname = process.cwd() + "/backend/docs";
@@ -34,14 +25,6 @@ app.get("/", (_req, res) => {
 });
 
 app.use("/api/seasons", seasonsRoutes);
-app.use("/api", driversRoutes);
-app.use("/api", constructorsRoutes);
-app.use("/api", resultsRoutes);
-app.use("/api", standingsRoutes);
-app.use("/api", qualifyingRoutes);
-app.use("/api", pitstopsRoutes);
-app.use("/api", lapsRoutes);
-app.use("/api/status", statusRoutes);
-app.use("/api", racesRoutes);
+app.use("/api/seasons", racesRoutes);
 
 export default app;

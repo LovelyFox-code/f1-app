@@ -1,16 +1,25 @@
 import express from "express";
-import mockRaces from "../mock-data/races.ts";
+import { Race } from "../models/race-model.ts";
 
 const router = express.Router();
-
-// All races for a given season
-router.get("/:season/races", ((req, res) => {
+// Get races for a season
+router.get("/:season/races", (async (req, res) => {
     const { season } = req.params;
-    const drivers = mockRaces.filter((r) => r.season === season);
-    if (drivers.length === 0) {
-        return res.status(404).json({ message: "No drivers found for this season" });
-    }
-    res.json(drivers);
-}) as express.RequestHandler);
 
+    try {
+        const races = await Race.find({ season }).sort({ round: 1 });
+
+        if (races.length === 0) {
+            return res.status(404).json({ message: "No races found for this season" });
+        }
+
+        res.json(races);
+    } catch (err) {
+        console.error("Error fetching races:", err);
+        res.status(500).json({
+            message: "Server error",
+            error: err instanceof Error ? err.message : "Unknown error"
+        });
+    }
+}) as express.RequestHandler);
 export default router;

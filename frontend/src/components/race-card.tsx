@@ -1,4 +1,4 @@
-import { Calendar, Flag, MapPin, Trophy, User } from "lucide-react";
+import { Flag, Trophy } from "lucide-react";
 import { RaceResult } from "@/types/api";
 import styles from "./race-card.module.css";
 
@@ -13,8 +13,8 @@ interface RaceCardProps {
 const RaceCard = ({ race, champion }: RaceCardProps) => {
   const isChampion =
     champion &&
-    race.Driver?.givenName === champion.givenName &&
-    race.Driver?.familyName === champion.familyName;
+    race.driver?.givenName === champion.givenName &&
+    race.driver?.familyName === champion.familyName;
 
   return (
     <div className={styles.card}>
@@ -24,17 +24,6 @@ const RaceCard = ({ race, champion }: RaceCardProps) => {
           Round {race.round}
         </h3>
         <div className={styles.round}>Position {race.position}</div>
-      </div>
-
-      <div className={styles.details}>
-        <div className={styles.detail}>
-          <Calendar className={styles.detailIcon} />
-          {race.Time?.time ?? "No time recorded"}
-        </div>
-        <div className={styles.detail}>
-          <MapPin className={styles.detailIcon} />
-          Grid: {race.grid} | Laps: {race.laps}
-        </div>
       </div>
 
       <div className={styles.divider}>
@@ -47,12 +36,9 @@ const RaceCard = ({ race, champion }: RaceCardProps) => {
           </div>
           <div className={styles.winnerInfo}>
             <div className={styles.winnerName}>
-              <User className={styles.winnerNameIcon} />
-              <span>
-                {race.Driver?.givenName ?? "Unknown"} {race.Driver?.familyName ?? "Driver"}
-              </span>
+              <span>{race.driver?.givenName ?? "Unknown"}</span>
+              <span>{race.driver?.familyName ?? "Driver"}</span>
             </div>
-            <span className={styles.winnerTeam}>{race.Constructor?.name ?? "Unknown Team"}</span>
           </div>
         </div>
       </div>

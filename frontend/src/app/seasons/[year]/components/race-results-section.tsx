@@ -20,24 +20,37 @@ const RaceResultsSection = ({
   races,
   champion,
 }: RaceResultsSectionProps) => {
-  console.log("races:", races);
-  console.log("champion: ", champion);
   if (loading) {
     return (
       <div className={styles.loadingContainer}>
-        <LoadingSpinner size="md" />
+        <LoadingSpinner size="lg" />
       </div>
     );
   }
 
   if (error) {
-    return <ErrorDisplay message={error} />;
+    return (
+      <div className={styles.errorContainer}>
+        <ErrorDisplay message={error} />
+      </div>
+    );
   }
 
+  if (!races || races.length === 0) {
+    return (
+      <div className={styles.errorContainer}>
+        <ErrorDisplay message="No race results available for this season" />
+      </div>
+    );
+  }
+  const winners = races.filter((race) => race.position === "1");
+  const sortedRaces = winners.slice().sort((a, b) => {
+    return Number(a.round) - Number(b.round);
+  });
   return (
     <div className={styles.grid}>
-      {races.map((race) => (
-        <RaceCard key={race.round} race={race} champion={champion} />
+      {sortedRaces.map((race) => (
+        <RaceCard key={race.id} race={race} champion={champion} />
       ))}
     </div>
   );

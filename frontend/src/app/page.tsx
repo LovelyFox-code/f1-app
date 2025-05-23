@@ -6,45 +6,29 @@ import { Button } from "@/components/button";
 import LoadingSpinner from "@/components/loading-spinner";
 import ErrorDisplay from "@/components/error-display";
 import SeasonCard from "@/components/season-card";
-import useF1Data from "@/hooks/use-f1-data";
 import NavBar from "@/components/navbar";
 import styles from "./page.module.css";
 import { Season } from "@/types/api";
 import apiService from "@/services/api";
-import { SeasonResult } from "@/types/f1";
+import { useSeasonRaceResults } from "@/hooks/use-season-race-results";
 
 const HomePage = () => {
-  const { loading, error, refetch } = useF1Data();
   const [visibleSeasons, setVisibleSeasons] = useState(6);
   const [seasons, setSeasons] = useState<Season[]>([]);
-  const [seasonResults, setSeasonResults] = useState<SeasonResult[]>([]);
-
+  console.log("seasons in teh page: ", seasons);
   useEffect(() => {
     const fetchSeasonsData = async () => {
       try {
         const seasonsData = await apiService.getSeasons();
         setSeasons(seasonsData);
-        const results = await Promise.all(
-          seasonsData.map(async (season) => {
-            const [champion, races] = await Promise.all([
-              apiService.getChampion(season.season),
-              apiService.getRaces(season.season),
-            ]);
-
-            return {
-              season: season.season,
-              champion,
-              rounds: races.length,
-            };
-          })
-        );
-        setSeasonResults(results);
       } catch (error) {
         console.error("Error fetching seasons:", error);
       }
     };
+
     fetchSeasonsData();
   }, []);
+  const { isLoading: loading, error } = useSeasonRaceResults("2022");
 
   const handleLoadMore = () => {
     setVisibleSeasons((prev) => prev + 6);
@@ -61,7 +45,7 @@ const HomePage = () => {
   if (error) {
     return (
       <div className={styles.errorContainer}>
-        <ErrorDisplay message={error} onRetry={refetch} />
+        <ErrorDisplay message={error.message} />
       </div>
     );
   }
@@ -98,8 +82,8 @@ const HomePage = () => {
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.grid}>
-            {seasonResults.slice(0, visibleSeasons).map((result) => (
-              <SeasonCard key={result.season} season={result} />
+            {seasons.slice(0, visibleSeasons).map((season) => (
+              <SeasonCard key={season.season} season={season} />
             ))}
           </div>
 

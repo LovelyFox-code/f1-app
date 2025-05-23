@@ -99,21 +99,23 @@ const ChampionshipStats = ({ stats }: ChampionshipStatsProps) => {
             </span>
           </div>
 
-          <div className={styles.bestSeasonCard}>
-            <div className={styles.bestSeasonContent}>
-              <div className={styles.bestSeasonYear}>
-                <Medal className={styles.bestSeasonYearIcon} />
-                <span>{driver.bestSeason.year}</span>
+          {driver.bestSeason && (
+            <div className={styles.bestSeasonCard}>
+              <div className={styles.bestSeasonContent}>
+                <div className={styles.bestSeasonYear}>
+                  <Medal className={styles.bestSeasonYearIcon} />
+                  <span>{driver.bestSeason.year}</span>
+                </div>
+                <div className={styles.bestSeasonWins}>
+                  <Award className={styles.bestSeasonWinsIcon} />
+                  <span>{driver.bestSeason.wins} Wins</span>
+                </div>
               </div>
-              <div className={styles.bestSeasonWins}>
-                <Award className={styles.bestSeasonWinsIcon} />
-                <span>{driver.bestSeason.wins} Wins</span>
+              <div className={styles.bestSeasonPoints}>
+                {driver.bestSeason.points} Points
               </div>
             </div>
-            <div className={styles.bestSeasonPoints}>
-              {driver.bestSeason.points} Points
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

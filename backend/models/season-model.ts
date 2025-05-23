@@ -1,4 +1,5 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
+
 
 const SeasonSchema = new mongoose.Schema(
   {
@@ -13,43 +14,13 @@ const SeasonSchema = new mongoose.Schema(
       required: true,
     },
     champion: {
-      driver: {
-        type: Schema.Types.ObjectId,
-        ref: "Driver",
-        required: true,
+      type: {
+        givenName: String,
+        familyName: String,
+        nationality: String,
+        constructor: String,
       },
-      constructor: {
-        type: Schema.Types.ObjectId,
-        ref: "Constructor",
-        required: true,
-      },
-      points: {
-        type: Number,
-        required: true,
-      },
-      wins: {
-        type: Number,
-        required: true,
-      },
-      podiums: {
-        type: Number,
-        required: true,
-      },
-    },
-    constructorChampion: {
-      constructor: {
-        type: Schema.Types.ObjectId,
-        ref: "Constructor",
-        required: true,
-      },
-      points: {
-        type: Number,
-        required: true,
-      },
-      wins: {
-        type: Number,
-        required: true,
-      },
+      required: false,
     },
   },
   {

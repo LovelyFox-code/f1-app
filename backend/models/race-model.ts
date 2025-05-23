@@ -1,94 +1,66 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose"
 
-const RaceResultSchema = new mongoose.Schema({
-  number: String,
-  position: {
-    type: String,
-    required: true,
+const RaceSchema = new mongoose.Schema({
+  season: { type: String, required: true },
+  round: { type: String, required: true },
+  raceName: { type: String, required: true },
+  date: { type: Date, required: true },
+  time: { type: String, required: true },
+
+  circuit: {
+    circuitId: { type: String, required: true },
+    circuitName: { type: String, required: true },
+    location: {
+      lat: { type: String, required: true },
+      long: { type: String, required: true },
+      locality: { type: String, required: true },
+      country: { type: String, required: true }
+    }
   },
-  positionText: {
-    type: String,
-    required: true,
-  },
-  points: {
-    type: String,
-    required: true,
-  },
-  driver: {
-    type: Schema.Types.ObjectId,
-    ref: "Driver",
-    required: true,
-  },
-  constructor: {
-    type: Schema.Types.ObjectId,
-    ref: "Constructor",
-    required: true,
-  },
-  grid: {
-    type: String,
-    required: true,
-  },
-  laps: {
-    type: String,
-    required: true,
-  },
-  status: {
-    type: String,
-    required: true,
-  },
-  time: {
-    millis: String,
-    time: String,
-  },
-  fastestLap: {
-    rank: String,
-    lap: String,
+
+  results: [{
+    number: { type: String, required: true },
+    position: { type: String, required: true },
+    positionText: { type: String, required: true },
+    points: { type: String, required: true },
+
+    driver: {
+      driverId: { type: String, required: true },
+      permanentNumber: { type: String }, // made optional
+      code: { type: String, required: true },
+      givenName: { type: String, required: true },
+      familyName: { type: String, required: true },
+      dateOfBirth: { type: String, required: true },
+      nationality: { type: String, required: true }
+    },
+
+    constructor: {
+      constructorId: { type: String, required: true },
+      name: { type: String, required: true },
+      nationality: { type: String, required: true }
+    },
+
+    grid: { type: String, required: true },
+    laps: { type: String, required: true },
+    status: { type: String, required: true },
+
     time: {
-      time: String,
+      millis: { type: String, default: null },
+      time: { type: String, default: null }
     },
-    averageSpeed: {
-      units: String,
-      speed: String,
-    },
-  },
+
+    fastestLap: {
+      rank: { type: String, default: null },
+      lap: { type: String, default: null },
+      time: {
+        time: { type: String, default: null }
+      }
+    }
+  }]
+}, {
+  timestamps: true
 });
 
-const RaceSchema = new mongoose.Schema(
-  {
-    season: {
-      type: String,
-      required: true,
-      index: true,
-    },
-    round: {
-      type: Number,
-      required: true,
-    },
-    raceName: {
-      type: String,
-      required: true,
-    },
-    date: {
-      type: String,
-      required: true,
-    },
-    time: String,
-    circuit: {
-      type: Schema.Types.ObjectId,
-      ref: "Circuit",
-      required: true,
-    },
-    results: [RaceResultSchema],
-  },
-  {
-    timestamps: true,
-  }
-);
-
-// Compound index for season and round
 RaceSchema.index({ season: 1, round: 1 }, { unique: true });
 
-// Index for date searches
-RaceSchema.index({ date: 1 });
-
-export const Race = mongoose.model("Race", RaceSchema); 
+export const Race = mongoose.model("Race", RaceSchema);

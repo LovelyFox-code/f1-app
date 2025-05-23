@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { Calendar, ChevronRight } from "lucide-react";
-import { SeasonResult } from "@/types/f1";
 import styles from "./season-card.module.css";
+import { Season } from "@/types/api";
 
 interface SeasonCardProps {
-  season: SeasonResult;
+  season: Season;
 }
 
 const SeasonCard = ({ season }: SeasonCardProps) => {
+  const driver = season.champion;
+  console.log("season in season-card", season);
   return (
     <article className={styles.card}>
       <header className={styles.header}>
@@ -23,19 +25,21 @@ const SeasonCard = ({ season }: SeasonCardProps) => {
           <div className={styles.infoRow}>
             <span className={styles.infoLabel}>Champion:</span>
             <span className={styles.infoValue}>
-              {season.champion.givenName} {season.champion.familyName}
+              {driver
+                ? `${driver.givenName} ${driver.familyName}`
+                : "Unavailable"}
             </span>
           </div>
           <div className={styles.infoRow}>
             <span className={styles.infoLabel}>Constructor:</span>
             <span className={styles.infoValue}>
-              {season.champion.constructorName}
+              {driver?.constructor ?? "Unavailable"}
             </span>
           </div>
           <div className={styles.infoRow}>
             <span className={styles.infoLabel}>Nationality:</span>
             <span className={styles.infoValue}>
-              {season.champion.nationality}
+              {driver?.nationality ?? "Unavailable"}
             </span>
           </div>
         </div>
@@ -45,7 +49,7 @@ const SeasonCard = ({ season }: SeasonCardProps) => {
           className={styles.link}
           aria-label={`View details for ${season.season} season`}
         >
-          View Season Details
+          View Details
           <ChevronRight className={styles.linkIcon} aria-hidden="true" />
         </Link>
       </div>

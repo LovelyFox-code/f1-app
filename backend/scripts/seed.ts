@@ -1,37 +1,51 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import * as path from 'path';
 
 import {
-    fetchAndStoreDrivers,
-    fetchAndStoreConstructors,
-    fetchAndStoreCircuits,
     fetchAndStoreSeasons,
     fetchAndStoreRaces,
+    fetchAndStoreChampions,
 } from "../services/ergast.ts";
-import { Circuit, Constructor, Driver, Race, Season } from "../models/index.ts";
+import { Driver, Race, Season } from "../models/index.js";
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+
 const importData = async () => {
-    await fetchAndStoreDrivers();
-    await fetchAndStoreConstructors();
-    await fetchAndStoreCircuits();
-    await fetchAndStoreSeasons();
-    await fetchAndStoreRaces();
-    console.log("Seeding complete");
-};
-const destroyData = async () => {
-    await Driver.deleteMany({});
-    await Constructor.deleteMany({});
-    await Circuit.deleteMany({});
-    await Season.deleteMany({});
-    await Race.deleteMany({});
-    console.log("Data destroyed");
+    try {
+        await fetchAndStoreSeasons();
+        await fetchAndStoreRaces();
+        await fetchAndStoreChampions()
+        console.log("Seeding complete");
+    } catch (error) {
+        console.error("Error during data import:", error);
+        throw error;
+    }
 };
 
+const destroyData = async () => {
+    try {
+        await Driver.deleteMany({});
+        await Season.deleteMany({});
+        await Race.deleteMany({});
+        console.log("Data destroyed");
+    } catch (error) {
+        console.error("Error during data destruction:", error);
+        throw error;
+    }
+};
 
 const runSeeder = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI as string);
+        if (!process.env.MONGODB_URI) {
+            throw new Error("MONGODB_URI is not defined in environment variables");
+        }
+
+        await mongoose.connect(process.env.MONGODB_URI);
         console.log("🚀 Connected to MongoDB");
 
         if (process.argv[2] === "-d") {
@@ -39,9 +53,9 @@ const runSeeder = async () => {
         } else {
             await importData();
         }
-        console.log("Seeding complete");
     } catch (err) {
-        console.error("Error during seeding", err);
+        console.error("Error during seeding:", err);
+        process.exit(1);
     } finally {
         await mongoose.disconnect();
         console.log("Disconnected from MongoDB");

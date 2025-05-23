@@ -1,5 +1,5 @@
 import ChampionshipStats from "@/components/championship-stats";
-import { ChampionStats } from "@/types/f1";
+import { ChampionStats } from "@/types/api";
 
 interface ChampionStatsSectionProps {
   stats: ChampionStats;
