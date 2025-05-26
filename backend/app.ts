@@ -4,7 +4,6 @@ import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
 import path from "path";
 import seasonsRoutes from "./routes/seasons-routes.ts";
-import racesRoutes from "./routes/races-routes.ts";
 const app = express();
 
 const __dirname = process.cwd() + "/backend/docs";
@@ -16,11 +15,10 @@ app.use(express.json());
 app.use(cors());
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+app.use("/api/seasons", seasonsRoutes);
+
 app.get("/", (_req, res) => {
     res.send("API is running...");
 });
-
-app.use("/api/seasons", seasonsRoutes);
-app.use("/api/seasons", racesRoutes);
 
 export default app;

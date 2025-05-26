@@ -34,7 +34,7 @@ const SeasonCard = ({ season }: SeasonCardProps) => {
           <div className={styles.infoRow}>
             <span className={styles.infoLabel}>Constructor:</span>
             <span className={styles.infoValue}>
-              {driver?.constructor ?? "Unavailable"}
+              {driver?.constructorName ?? "Unavailable"}
             </span>
           </div>
           <div className={styles.infoRow}>

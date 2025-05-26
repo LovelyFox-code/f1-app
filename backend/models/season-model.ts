@@ -18,7 +18,7 @@ const SeasonSchema = new mongoose.Schema(
         givenName: String,
         familyName: String,
         nationality: String,
-        constructor: String,
+        constructorName: String,
       },
       required: false,
     },

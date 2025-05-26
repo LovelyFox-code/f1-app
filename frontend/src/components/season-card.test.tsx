@@ -10,7 +10,7 @@ const mockSeason = {
   champion: {
     givenName: "Max",
     familyName: "Verstappen",
-    constructor: "Red Bull",
+    constructorName: "Red Bull",
     nationality: "Dutch",
   },
 };

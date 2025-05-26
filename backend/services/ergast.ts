@@ -1,6 +1,8 @@
 import axios from "axios";
-import { Race, Season } from "../models/index.ts";
+import { Season } from "../models/season-model.ts";
+import { Race } from "../models/race-model.ts";
 import * as dotenv from "dotenv";
+
 
 dotenv.config();
 
@@ -44,7 +46,6 @@ export const fetchAndStoreRaces = async () => {
             const races = data.MRData.RaceTable.Races;
             const rounds = races.length;
             for (const r of races) {
-                await delay(300);
                 const raceDetails = await axios.get(
                     `${baseURL}/${season}/${r.round}/results.json`
                 );
@@ -62,7 +63,7 @@ export const fetchAndStoreRaces = async () => {
                         nationality: res.Driver.nationality,
                     },
 
-                    constructor: {
+                    constructorName: {
                         constructorId: res.Constructor.constructorId,
                         name: res.Constructor.name,
                         nationality: res.Constructor.nationality,
@@ -119,7 +120,6 @@ export const fetchAndStoreChampions = async () => {
 
     for (const seasonObj of seasons) {
         const { season } = seasonObj;
-
         try {
             const championRes = await axios.get(
                 `https://api.jolpi.ca/ergast/f1/${season}/driverstandings/1.json`
@@ -132,18 +132,17 @@ export const fetchAndStoreChampions = async () => {
             if (driver && constructor) {
                 await delay(300);
                 await Season.updateOne(
-                    { season },
+                    { season: season },
                     {
                         champion: {
                             givenName: driver.givenName,
                             familyName: driver.familyName,
                             nationality: driver.nationality,
-                            constructor: constructor.name,
+                            constructorName: constructor.name,
                         },
                     }
                 );
                 console.log(`Champion stored for season ${season}`);
-                console.log(`CONSTRUCTOR: ${constructor.name}`)
             } else {
                 console.warn(`No champion data for season ${season}`);
             }

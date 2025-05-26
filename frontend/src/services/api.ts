@@ -48,16 +48,6 @@ export const apiService = {
       constructor: {
         name: result.constructor.name,
       },
-      grid: result.grid,
-      status: result.status,
-      laps: result.laps,
-      time: result.time?.time,
-      fastestLap: result.fastestLap ? {
-        rank: result.fastestLap.rank,
-        lap: result.fastestLap.lap,
-        time: result.fastestLap.time?.time || '',
-        averageSpeed: '',
-      } : undefined,
     }));
   },
 };

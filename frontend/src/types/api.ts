@@ -7,30 +7,11 @@ export interface BaseEntity {
 // Driver types
 export interface Driver extends BaseEntity {
   driverId: string;
-  permanentNumber?: string;
-  code?: string;
   givenName: string;
   familyName: string;
-  dateOfBirth: string;
   nationality: string;
   constructorName?: string;
 }
-
-// Constructor types
-export interface Constructor extends BaseEntity {
-  constructorId: string;
-  name: string;
-  nationality: string;
-}
-
-// Circuit types
-export interface Location {
-  lat: string;
-  long: string;
-  locality: string;
-  country: string;
-}
-
 export interface Circuit extends BaseEntity {
   circuitId: string;
   circuitName: string;
@@ -87,19 +68,6 @@ export interface Race extends BaseEntity {
     constructor: {
       name: string;
     };
-    grid: string;
-    status: string;
-    laps: string;
-    time?: {
-      time: string;
-    };
-    fastestLap?: {
-      rank: string;
-      lap: string;
-      time?: {
-        time: string;
-      };
-    };
   }[];
   winnerIsChampion?: boolean;
 }
@@ -113,7 +81,7 @@ export interface Season {
     givenName: string;
     familyName: string;
     nationality: string;
-    constructor: string;
+    constructorName: string;
   };
 }
 
@@ -139,29 +107,6 @@ export interface ApiError {
     [key: string]: string[];
   };
 }
-
-// API Request types
-export interface PaginationParams {
-  page?: number;
-  limit?: number;
-  sort?: string;
-  order?: 'asc' | 'desc';
-}
-
-export interface SeasonQueryParams extends PaginationParams {
-  year?: string;
-  driverId?: string;
-  constructorId?: string;
-}
-
-export interface RaceQueryParams extends PaginationParams {
-  season?: string;
-  round?: string;
-  circuitId?: string;
-  driverId?: string;
-  constructorId?: string;
-}
-
 export interface ChampionStats {
   driver: {
     givenName: string;
@@ -180,19 +125,4 @@ export interface ChampionStats {
     name: string;
     totalChampionships: number;
   };
-}
-
-export interface DriverStanding {
-  position: string;
-  points: string;
-  wins: string;
-  driver: Driver;
-  constructors: Constructor[];
-}
-
-export interface ConstructorStanding {
-  position: string;
-  points: string;
-  wins: string;
-  constructor: Constructor;
 }

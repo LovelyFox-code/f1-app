@@ -28,6 +28,7 @@
   display: flex;
   align-items: center;
   margin-bottom: var(--spacing-md);
+  margin-top: var(--spacing-md);
 }
 
 .raceResultsTitle {
@@ -49,4 +50,4 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
-} 
+}

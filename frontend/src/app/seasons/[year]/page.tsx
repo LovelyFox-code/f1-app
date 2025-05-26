@@ -27,9 +27,15 @@ const SeasonPage = () => {
   if (error) return <ErrorDisplay message="Failed to load season data" />;
   if (!currentSeason)
     return <ErrorDisplay message={`Season ${year} not found`} />;
+  if (!currentSeason.champion)
+    return <ErrorDisplay message={`No champion data available for season ${year}`} />;
 
   const champion = currentSeason.champion;
   const driver = champion;
+
+  if (!driver) {
+    return <ErrorDisplay message={`Driver data not available for season ${year}`} />;
+  }
 
   const championStats: ChampionStats = {
     driver: {
@@ -38,17 +44,20 @@ const SeasonPage = () => {
       nationality: driver.nationality,
       totalChampionships: seasons.filter(
         (s) =>
+          s.champion &&
           s.champion.givenName === driver.givenName &&
           s.champion.familyName === driver.familyName
       ).length,
       totalRaceWins: raceResults.filter(
         (result) =>
+          result.driver &&
           result.driver.givenName === driver.givenName &&
           result.driver.familyName === driver.familyName &&
           result.position === "1"
       ).length,
       totalPodiums: raceResults.filter(
         (result) =>
+          result.driver &&
           result.driver.givenName === driver.givenName &&
           result.driver.familyName === driver.familyName &&
           ["1", "2", "3"].includes(result.position)
@@ -57,6 +66,7 @@ const SeasonPage = () => {
         year,
         wins: raceResults.filter(
           (result) =>
+            result.driver &&
             result.driver.givenName === driver.givenName &&
             result.driver.familyName === driver.familyName &&
             result.position === "1"
@@ -64,6 +74,7 @@ const SeasonPage = () => {
         points: raceResults
           .filter(
             (result) =>
+              result.driver &&
               result.driver.givenName === driver.givenName &&
               result.driver.familyName === driver.familyName
           )
@@ -71,9 +82,9 @@ const SeasonPage = () => {
       },
     },
     constructor: {
-      name: champion.constructor,
+      name: champion.constructorName,
       totalChampionships: seasons.filter(
-        (s) => s.champion.constructor === champion.constructor
+        (s) => s.champion && s.champion.constructorName === champion.constructorName
       ).length,
     },
   };
@@ -94,7 +105,6 @@ const SeasonPage = () => {
                 Champions for the season races
               </h2>
             </div>
-
             <div className={styles.raceResultsContainer}>
               <RaceResultsSection
                 loading={isLoading}

@@ -9,7 +9,9 @@ import {
     fetchAndStoreRaces,
     fetchAndStoreChampions,
 } from "../services/ergast.ts";
-import { Race, Season } from "../models/index.js";
+import { Season } from "../models/season-model.ts";
+import { Race } from "../models/race-model.ts";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
