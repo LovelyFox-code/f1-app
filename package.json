@@ -11,7 +11,10 @@
     "lint": "npm run lint --prefix frontend && echo 'No backend linting configured'",
     "test": "npm run test:frontend && npm run test:backend",
     "test:frontend": "npm test --prefix frontend",
-    "test:backend": "echo 'No backend tests configured'"
+    "test:backend": "echo 'No backend tests configured'",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "npm run build --prefix frontend",
+    "build:backend": "tsc -p backend/tsconfig.json"
   },
   "author": "Alina Dakhno",
   "license": "ISC",
