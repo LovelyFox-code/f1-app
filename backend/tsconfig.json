@@ -12,7 +12,10 @@
     "baseUrl": ".",
     "paths": {
       "*": ["node_modules/*"]
-    }
+    },
+    "allowImportingTsExtensions": true,
+    "noEmit": false,
+    "resolveJsonModule": true
   },
   "include": [
     "**/*.ts"

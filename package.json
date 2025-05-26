@@ -14,7 +14,8 @@
     "test:backend": "echo 'No backend tests configured'",
     "build": "npm run build:frontend && npm run build:backend",
     "build:frontend": "npm run build --prefix frontend",
-    "build:backend": "tsc -p backend/tsconfig.json"
+    "build:backend": "tsc -p backend/tsconfig.json && npm run copy-backend-files",
+    "copy-backend-files": "cp -r backend/package.json backend/dist/ && cp -r backend/.env* backend/dist/ 2>/dev/null || true"
   },
   "author": "Alina Dakhno",
   "license": "ISC",
