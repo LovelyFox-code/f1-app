@@ -6,7 +6,6 @@ export const useSeasonRaceResults = (year: string) => {
   return useQuery<RaceResult[]>({
     queryKey: ["seasonResults", year],
     queryFn: async () => {
-      console.time("Fetch season races");
       const racesData = await apiService.getRaces(year);
 
       if (!racesData || racesData.length === 0) {
@@ -23,7 +22,6 @@ export const useSeasonRaceResults = (year: string) => {
       });
 
       const results = await Promise.all(resultsPromises);
-      console.timeEnd("Fetch all race results");
       return results.flat();
     },
     staleTime: 1000 * 60 * 5,

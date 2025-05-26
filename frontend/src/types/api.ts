@@ -68,6 +68,12 @@ export interface Race extends BaseEntity {
     constructor: {
       name: string;
     };
+    grid: string;
+    status: string;
+    laps: string;
+    time?: {
+      time: string;
+    };
   }[];
   winnerIsChampion?: boolean;
 }

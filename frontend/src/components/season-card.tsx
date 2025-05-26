@@ -10,7 +10,6 @@ interface SeasonCardProps {
 
 const SeasonCard = ({ season }: SeasonCardProps) => {
   const driver = season.champion;
-  console.log("season in season-card", season);
   return (
     <article className={styles.card}>
       <header className={styles.header}>
