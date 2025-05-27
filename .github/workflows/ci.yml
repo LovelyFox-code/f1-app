@@ -52,7 +52,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build backend Docker image
-        run: docker build -t $DOCKER_IMAGE:latest -f Dockerfile .
+        run: docker build -t $DOCKER_IMAGE:latest -f backend/Dockerfile .
 
       - name: Trivy scan (fail on CRITICAL/HIGH)
         uses: aquasecurity/trivy-action@master
