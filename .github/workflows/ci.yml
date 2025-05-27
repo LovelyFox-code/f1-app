@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/f1-backend
+  DOCKER_TAG: ${{ github.sha }}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install root deps
+        run: npm ci
+
+      - name: Install frontend deps
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Run frontend lint
+        working-directory: ./frontend
+        run: npm run lint
+
+      - name: Run frontend tests
+        working-directory: ./frontend
+        run: npm test
+
+      - name: Run backend tests
+        run: npm run test:backend || echo "No backend tests configured"
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Build backend
+        run: npm run build:backend || echo "No backend build configured"
+
+      - name: Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build backend Docker image
+        run: docker build -t $DOCKER_IMAGE:latest -f backend/Dockerfile .
+
+      - name: Docker login
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Push Docker image
+        run: docker push $DOCKER_IMAGE:latest

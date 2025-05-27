@@ -7,7 +7,11 @@
   "scripts": {
     "start": "node --loader ts-node/esm backend/index.ts",
     "dev": "NODE_ENV=development node --loader ts-node/esm backend/index.ts",
-    "seed": "node --loader ts-node/esm backend/scripts/seed.ts"
+    "seed": "node --loader ts-node/esm backend/scripts/seed.ts",
+    "lint": "npm run lint --prefix frontend && echo 'No backend linting configured'",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "npm test --prefix frontend",
+    "test:backend": "echo 'No backend tests configured'"
   },
   "author": "Alina Dakhno",
   "license": "ISC",
