@@ -1,126 +1,72 @@
-"use client";
-
 import React from "react";
-import { useParams } from "next/navigation";
 import ErrorDisplay from "@/components/error-display";
-import NavBar from "@/components/navbar";
-import RaceResultsSection from "./components/race-results-section";
+import ClientNavBar from "@/components/client-navbar";
+import ClientRaceResultsSection from "@/components/client-race-results-section";
 import ChampionStatsSection from "./components/champion-stats-section";
 import SeasonHeader from "./components/season-header";
 import { Flag } from "lucide-react";
 import styles from "./page.module.css";
-import { ChampionStats } from "@/types/api";
-import { useSeasonRaceResults } from "@/hooks/use-season-race-results";
-import { useSeasons } from "@/hooks/use-seasons";
-import LoadingSpinner from "@/components/loading-spinner";
+import { getSeasonData } from "./season-data";
 
-const SeasonPage = () => {
-  const params = useParams();
-  const year = params.year as string;
+interface PageProps {
+  params: Promise<{
+    year: string;
+  }>;
+}
 
-  const { data: seasons = [], isLoading, error } = useSeasons();
-  const { data: raceResults = [] } = useSeasonRaceResults(year);
+const SeasonPage = async ({ params }: PageProps) => {
+  try {
+    const resolvedParams = await params;
+    const { currentSeason, raceResults, championStats } = await getSeasonData(
+      resolvedParams.year
+    );
 
-  const currentSeason = seasons.find((s) => s.season === year);
+    return (
+      <main>
+        <ClientNavBar />
 
-  if (isLoading) return <LoadingSpinner />;
-  if (error) return <ErrorDisplay message="Failed to load season data" />;
-  if (!currentSeason)
-    return <ErrorDisplay message={`Season ${year} not found`} />;
-  if (!currentSeason.champion)
-    return <ErrorDisplay message={`No champion data available for season ${year}`} />;
+        <SeasonHeader
+          season={resolvedParams.year}
+          rounds={currentSeason.rounds}
+        />
 
-  const champion = currentSeason.champion;
-  const driver = champion;
-
-  if (!driver) {
-    return <ErrorDisplay message={`Driver data not available for season ${year}`} />;
-  }
-
-  const championStats: ChampionStats = {
-    driver: {
-      givenName: driver.givenName,
-      familyName: driver.familyName,
-      nationality: driver.nationality,
-      totalChampionships: seasons.filter(
-        (s) =>
-          s.champion &&
-          s.champion.givenName === driver.givenName &&
-          s.champion.familyName === driver.familyName
-      ).length,
-      totalRaceWins: raceResults.filter(
-        (result) =>
-          result.driver &&
-          result.driver.givenName === driver.givenName &&
-          result.driver.familyName === driver.familyName &&
-          result.position === "1"
-      ).length,
-      totalPodiums: raceResults.filter(
-        (result) =>
-          result.driver &&
-          result.driver.givenName === driver.givenName &&
-          result.driver.familyName === driver.familyName &&
-          ["1", "2", "3"].includes(result.position)
-      ).length,
-      bestSeason: {
-        year,
-        wins: raceResults.filter(
-          (result) =>
-            result.driver &&
-            result.driver.givenName === driver.givenName &&
-            result.driver.familyName === driver.familyName &&
-            result.position === "1"
-        ).length,
-        points: raceResults
-          .filter(
-            (result) =>
-              result.driver &&
-              result.driver.givenName === driver.givenName &&
-              result.driver.familyName === driver.familyName
-          )
-          .reduce((sum, result) => sum + parseFloat(result.points), 0),
-      },
-    },
-    constructor: {
-      name: champion.constructorName,
-      totalChampionships: seasons.filter(
-        (s) => s.champion && s.champion.constructorName === champion.constructorName
-      ).length,
-    },
-  };
-
-  return (
-    <main>
-      <NavBar />
-
-      <SeasonHeader season={year} rounds={currentSeason.rounds} />
-
-      <div className={styles.container}>
-        <div className={styles.content}>
-          <ChampionStatsSection stats={championStats} />
-          <div className={styles.raceResultsSection}>
-            <div className={styles.raceResultsHeader}>
-              <h2 className={styles.raceResultsTitle}>
-                <Flag className={styles.raceResultsIcon} />
-                Champions for the season races
-              </h2>
-            </div>
-            <div className={styles.raceResultsContainer}>
-              <RaceResultsSection
-                loading={isLoading}
-                error={error || null}
-                races={raceResults}
-                champion={{
-                  givenName: driver.givenName,
-                  familyName: driver.familyName,
-                }}
-              />
+        <div className={styles.container}>
+          <div className={styles.content}>
+            <ChampionStatsSection stats={championStats} />
+            <div className={styles.raceResultsSection}>
+              <div className={styles.raceResultsHeader}>
+                <h2 className={styles.raceResultsTitle}>
+                  <Flag className={styles.raceResultsIcon} />
+                  Champions for the season races
+                </h2>
+              </div>
+              <div className={styles.raceResultsContainer}>
+                <ClientRaceResultsSection
+                  loading={false}
+                  error={null}
+                  races={raceResults}
+                  champion={{
+                    givenName: currentSeason.champion.givenName,
+                    familyName: currentSeason.champion.familyName,
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </main>
-  );
+      </main>
+    );
+  } catch (error) {
+    return (
+      <ErrorDisplay
+        message={
+          error instanceof Error
+            ? error.message
+            : "An error occurred while fetching season data"
+        }
+      />
+    );
+  }
 };
 
 export default SeasonPage;

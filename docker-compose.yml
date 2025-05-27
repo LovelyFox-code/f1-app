@@ -18,9 +18,28 @@ services:
       dockerfile: backend/Dockerfile
     ports:
       - "5001:5001"
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
       - PORT=5001
+      - MONGODB_URI=mongodb://mongodb:27017/formula-1
+      - ERGAST_API=https://ergast.com/api/f1
     volumes:
       - .:/app
     working_dir: /app
+    command: >
+      sh -c "npm run seed && npm start"
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:6
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

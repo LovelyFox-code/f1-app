@@ -1,36 +1,36 @@
-import { Race, Season, RaceResult } from '@/types/api';
-import axios from 'axios';
+import { Race, Season, RaceResult } from "@/types/api";
+import axios from "axios";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5001/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5001";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
 export const apiService = {
   // Seasons
   getSeasons: async (): Promise<Season[]> => {
-    const response = await api.get('/seasons');
+    const response = await api.get("/api/seasons");
     return response.data;
   },
 
   getSeason: async (year: string): Promise<Season> => {
-    const response = await api.get(`/seasons/${year}`);
+    const response = await api.get(`/api/seasons/${year}`);
     return response.data;
   },
 
   // Races
   getRaces: async (year: string): Promise<Race[]> => {
-    const response = await api.get(`/seasons/${year}/races`);
+    const response = await api.get(`/api/seasons/${year}/races`);
     return response.data;
   },
 
   // Results
   getRaceResults: async (year: string, round: number): Promise<RaceResult[]> => {
-    const response = await api.get(`/seasons/${year}/races`);
+    const response = await api.get(`/api/seasons/${year}/races`);
     const race = response.data.find((r: Race) => r.round === round);
 
     if (!race) {

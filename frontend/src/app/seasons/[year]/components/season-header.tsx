@@ -25,11 +25,12 @@ const SeasonHeader = ({
       <div className={styles.content}>
         <h1 className={styles.title}>
           <CalendarRange className={styles.titleIcon} />
-          {season} Formula 1 Season
+          {season} Formula-1
         </h1>
         <div className={styles.rounds}>{rounds} Races</div>
       </div>
     </div>
   </div>
 );
+
 export default SeasonHeader;

@@ -15,13 +15,14 @@
 /coverage
 **/coverage
 
-# Next.js build & output
+# build & output
 /.next/
 /out/
 /build
 **/.next
 **/out
 **/build
+**/dist
 
 **/.env*
 !.env.example
