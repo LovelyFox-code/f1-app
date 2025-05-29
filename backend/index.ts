@@ -12,7 +12,7 @@ const startServer = async () => {
         console.log("MongoDB connection successful");
 
         app.listen(port, "0.0.0.0", () => {
-            const isRender = process.env.RENDER === 'true';
+            const isRender = process.env.RENDER === "true";
             const baseUrl = isRender
                 ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`
                 : `http://localhost:${port}`;

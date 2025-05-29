@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import * as path from 'path';
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import * as path from "path";
 
 import {
     fetchAndStoreSeasons,
@@ -15,7 +15,7 @@ import { Race } from "../models/race-model.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 const importData = async () => {
     try {

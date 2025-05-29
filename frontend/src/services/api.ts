@@ -34,9 +34,9 @@ export const apiService = {
     const race = response.data.find((r: Race) => r.round === round);
 
     if (!race) {
-      throw new Error('Race not found');
+      throw new Error("Race not found");
     }
-    return race.results.map((result: Race['results'][0]) => ({
+    return race.results.map((result: Race["results"][0]) => ({
       round: race.round,
       position: result.position,
       points: result.points,

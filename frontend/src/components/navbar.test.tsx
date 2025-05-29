@@ -31,7 +31,9 @@ describe("NavBar", () => {
   it("renders home navigation link", () => {
     render(<NavBar />);
     const homeLinks = screen.getAllByRole("link", { name: /home/i });
-    const homeLink = homeLinks.find(link => link.getAttribute("aria-current") === "page");
+    const homeLink = homeLinks.find(
+      (link) => link.getAttribute("aria-current") === "page"
+    );
     expect(homeLink).toBeInTheDocument();
     expect(homeLink).toHaveAttribute("href", "/");
     expect(homeLink).toHaveAttribute("aria-current", "page");

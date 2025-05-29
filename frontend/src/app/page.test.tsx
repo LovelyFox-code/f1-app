@@ -24,4 +24,4 @@ describe("HomePage", () => {
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute("href", "/seasons");
   });
-}); 
+});

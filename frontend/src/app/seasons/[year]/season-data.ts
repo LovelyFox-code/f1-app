@@ -8,7 +8,7 @@ export async function getSeasons() {
     process.stdout.write(`[getSeasons] Successfully fetched ${response.length} seasons\n`);
     return response;
   } catch (error) {
-    process.stdout.write(`[getSeasons Error] Failed to fetch seasons: ${error instanceof Error ? error.message : 'Unknown error'}\n`);
+    process.stdout.write(`[getSeasons Error] Failed to fetch seasons: ${error instanceof Error ? error.message : "Unknown error"}\n`);
     throw error;
   }
 }
@@ -31,7 +31,7 @@ export async function getRacesWithResults(year: string) {
           const results = await apiService.getRaceResults(year, race.round);
           return results;
         } catch (error) {
-          process.stdout.write(`[getRacesWithResults] Error fetching results for race ${race.round}: ${error instanceof Error ? error.message : 'Unknown error'}\n`);
+          process.stdout.write(`[getRacesWithResults] Error fetching results for race ${race.round}: ${error instanceof Error ? error.message : "Unknown error"}\n`);
           return [];
         }
       })
@@ -40,7 +40,7 @@ export async function getRacesWithResults(year: string) {
     process.stdout.write(`[getRacesWithResults] Successfully fetched results for ${racesWithResults.length} races\n`);
     return racesWithResults.flat();
   } catch (error) {
-    process.stdout.write(`[getRacesWithResults Error] Failed to fetch races for year ${year}: ${error instanceof Error ? error.message : 'Unknown error'}\n`);
+    process.stdout.write(`[getRacesWithResults Error] Failed to fetch races for year ${year}: ${error instanceof Error ? error.message : "Unknown error"}\n`);
     throw error;
   }
 }
@@ -82,7 +82,7 @@ export async function getSeasonData(year: string) {
       championStats,
     };
   } catch (error) {
-    process.stdout.write(`[getSeasonData Error] Failed to fetch season data for year ${year}: ${error instanceof Error ? error.message : 'Unknown error'}\n`);
+    process.stdout.write(`[getSeasonData Error] Failed to fetch season data for year ${year}: ${error instanceof Error ? error.message : "Unknown error"}\n`);
     throw error;
   }
 }
