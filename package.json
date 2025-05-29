@@ -22,6 +22,7 @@
     "express": "^5.1.0",
     "helmet": "^8.1.0",
     "mongoose": "^8.14.3",
+    "p-limit": "^6.2.0",
     "swagger-ui-express": "^5.0.1",
     "yamljs": "^0.3.0"
   },

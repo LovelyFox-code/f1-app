@@ -66,9 +66,7 @@ vi.mock("./season-data", () => ({
 
 describe("SeasonPage", () => {
   it("renders the season header and champion stats", async () => {
-    render(
-      await SeasonPage({ params: { year: "2023" } })
-    );
+    render(await SeasonPage({ params: Promise.resolve({ year: "2023" }) }));
 
     expect(screen.getByTestId("season-header")).toHaveTextContent(
       "SeasonHeader: 2023, 22 rounds"
@@ -78,11 +76,11 @@ describe("SeasonPage", () => {
   });
 
   it("renders error display when data fetching fails", async () => {
-    vi.mocked(getSeasonData).mockRejectedValueOnce(new Error("Failed to fetch data"));
-
-    render(
-      await SeasonPage({ params: { year: "2023" } })
+    vi.mocked(getSeasonData).mockRejectedValueOnce(
+      new Error("Failed to fetch data")
     );
+
+    render(await SeasonPage({ params: Promise.resolve({ year: "2023" }) }));
 
     expect(screen.getByText("Error: Failed to fetch data")).toBeInTheDocument();
   });
