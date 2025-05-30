@@ -8,7 +8,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://backend:5001
+      - NEXT_PUBLIC_API_URL=http://backend:5001/api
     depends_on:
       - backend
 
@@ -24,7 +24,7 @@ services:
       - NODE_ENV=production
       - PORT=5001
       - MONGODB_URI=mongodb://mongodb:27017/formula-1
-      - ERGAST_API=https://ergast.com/api/f1
+      - ERGAST_API=https://api.jolpi.ca/ergast/f1
     volumes:
       - .:/app
     working_dir: /app

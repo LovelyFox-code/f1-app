@@ -13,8 +13,13 @@ const api = axios.create({
 export const apiService = {
   // Seasons
   getSeasons: async (): Promise<Season[]> => {
-    const response = await api.get("/seasons");
-    return response.data;
+    try {
+      const response = await api.get("/seasons");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching seasons:", error);
+      return [];
+    }
   },
 
   getSeason: async (year: string): Promise<Season> => {

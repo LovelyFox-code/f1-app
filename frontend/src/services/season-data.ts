@@ -49,7 +49,7 @@ export async function getSeasonData(year: string) {
   try {
     process.stdout.write(`[getSeasonData] Starting data fetch for year ${year}...\n`);
 
-    const seasons = await getSeasons();
+    const seasons = await apiService.getSeasons();
     const currentSeason = seasons.find((s) => s.season === year);
 
     if (!currentSeason) {

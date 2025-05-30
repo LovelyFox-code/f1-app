@@ -6,7 +6,7 @@ import ChampionStatsSection from "./components/champion-stats-section";
 import SeasonHeader from "./components/season-header";
 import { Flag } from "lucide-react";
 import styles from "./page.module.css";
-import { getSeasonData } from "./season-data";
+import { getSeasonData } from "../../../services/season-data";
 
 interface PageProps {
   params: Promise<{

@@ -11,7 +11,9 @@
     "lint": "npm run lint --prefix frontend && echo 'No backend linting configured'",
     "test": "npm run test:frontend && npm run test:backend",
     "test:frontend": "npm test --prefix frontend",
-    "test:backend": "cd backend && jest --config jest.config.ts"
+    "test:backend": "cd backend && jest --config jest.config.ts",
+    "test:backend:watch": "cd backend && jest --config jest.config.ts --watch",
+    "test:backend:coverage": "cd backend && jest --config jest.config.ts --coverage"
   },
   "author": "Alina Dakhno",
   "license": "ISC",

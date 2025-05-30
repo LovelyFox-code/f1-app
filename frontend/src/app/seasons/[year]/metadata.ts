@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getSeasonData } from "./season-data";
+import { getSeasonData } from "../../../services/season-data";
 
 export const generateMetadata = async ({
   params,

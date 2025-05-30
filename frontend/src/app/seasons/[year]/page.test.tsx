@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import SeasonPage from "./page";
 import { describe, expect, it, vi } from "vitest";
-import { getSeasonData } from "./season-data";
+import { getSeasonData } from "../../../services/season-data";
 
 // Mock components to avoid rendering issues
 vi.mock("@/components/client-navbar", () => ({
