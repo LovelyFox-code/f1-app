@@ -8,6 +8,9 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:watch": "vitest --coverage",
     "lint": "next lint"
   },
   "dependencies": {

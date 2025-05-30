@@ -31,41 +31,50 @@ vi.mock("@/components/client-race-results-section", () => ({
 }));
 
 // Mock the data fetching
-vi.mock("./season-data", () => ({
-  getSeasonData: vi.fn().mockResolvedValue({
-    currentSeason: {
-      season: "2023",
-      rounds: 22,
-      champion: {
-        givenName: "Max",
-        familyName: "Verstappen",
-      },
-    },
-    raceResults: [],
-    championStats: {
-      driver: {
-        givenName: "Max",
-        familyName: "Verstappen",
-        nationality: "Dutch",
-        totalChampionships: 3,
-        totalRaceWins: 54,
-        totalPodiums: 98,
-        bestSeason: {
-          year: "2023",
-          wins: 19,
-          points: 575,
-        },
-      },
-      constructor: {
-        name: "Red Bull Racing",
-        totalChampionships: 6,
-      },
-    },
-  }),
+vi.mock("../../../services/season-data", () => ({
+  getSeasonData: vi.fn(),
 }));
 
 describe("SeasonPage", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("renders the season header and champion stats", async () => {
+    vi.mocked(getSeasonData).mockResolvedValueOnce({
+      currentSeason: {
+        _id: "2023",
+        season: "2023",
+        rounds: 22,
+        champion: {
+          givenName: "Max",
+          familyName: "Verstappen",
+          nationality: "Dutch",
+          constructorName: "Red Bull Racing"
+        },
+      },
+      raceResults: [],
+      championStats: {
+        driver: {
+          givenName: "Max",
+          familyName: "Verstappen",
+          nationality: "Dutch",
+          totalChampionships: 3,
+          totalRaceWins: 54,
+          totalPodiums: 98,
+          bestSeason: {
+            year: "2023",
+            wins: 19,
+            points: 575,
+          },
+        },
+        constructor: {
+          name: "Red Bull Racing",
+          totalChampionships: 6,
+        },
+      },
+    });
+
     render(await SeasonPage({ params: Promise.resolve({ year: "2023" }) }));
 
     expect(screen.getByTestId("season-header")).toHaveTextContent(
