@@ -11,17 +11,20 @@ vi.mock("next/link", () => {
 });
 
 describe("SeasonHeader", () => {
-  it("renders season and rounds correctly", () => {
+  it("renders season title correctly", () => {
     render(<SeasonHeader season="2023" rounds={22} />);
-    const headerElement = screen.getByRole("heading", { level: 1 });
-    expect(headerElement).toHaveTextContent("2023 Formula-1");
+    expect(screen.getByText("2023 Formula-1")).toBeInTheDocument();
+  });
+
+  it("renders rounds count correctly", () => {
+    render(<SeasonHeader season="2023" rounds={22} />);
     expect(screen.getByText("22 Races")).toBeInTheDocument();
   });
 
   it("renders back button with correct text", () => {
     render(<SeasonHeader season="2023" rounds={22} />);
     expect(
-      screen.getByRole("button", { name: /Back to Champions/i })
+      screen.getByRole("button", { name: "Return to Formula 1 Champions list" })
     ).toBeInTheDocument();
   });
 });

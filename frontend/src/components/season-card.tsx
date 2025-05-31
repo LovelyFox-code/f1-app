@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { Calendar, ChevronRight } from "lucide-react";
 import styles from "./season-card.module.css";
 import { Season } from "@/types/api";
+import LoadingSpinner from "./loading-spinner";
 
 interface SeasonCardProps {
   season: Season;
 }
 
 const SeasonCard = ({ season }: SeasonCardProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const driver = season.champion;
+
+  const handleClick = () => {
+    setIsLoading(true);
+  };
+
   return (
     <article className={styles.card}>
       <header className={styles.header}>
@@ -48,9 +55,16 @@ const SeasonCard = ({ season }: SeasonCardProps) => {
           href={`/seasons/${season.season}`}
           className={styles.link}
           aria-label={`View details for ${season.season} season`}
+          onClick={handleClick}
         >
-          View Details
-          <ChevronRight className={styles.linkIcon} aria-hidden="true" />
+          {isLoading ? (
+            <LoadingSpinner size="sm" />
+          ) : (
+            <>
+              View Details
+              <ChevronRight aria-hidden="true" />
+            </>
+          )}
         </Link>
       </div>
     </article>

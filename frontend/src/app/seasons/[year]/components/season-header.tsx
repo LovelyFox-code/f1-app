@@ -15,8 +15,8 @@ const SeasonHeader = ({
     <div className={styles.container}>
       <div className={styles.backButton}>
         <Link href="/">
-          <Button variant="link" size="sm">
-            <ChevronLeft className={styles.backButtonIcon} />
+          <Button variant="link" size="sm" aria-label="Return to Formula 1 Champions list">
+            <ChevronLeft className={styles.backButtonIcon} aria-hidden="true" />
             Back to Champions
           </Button>
         </Link>
@@ -24,7 +24,7 @@ const SeasonHeader = ({
 
       <div className={styles.content}>
         <h1 className={styles.title}>
-          <CalendarRange className={styles.titleIcon} />
+          <CalendarRange className={styles.titleIcon} aria-hidden="true" />
           {season} Formula-1
         </h1>
         <div className={styles.rounds}>{rounds} Races</div>

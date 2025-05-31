@@ -18,24 +18,8 @@ const HomePage = () => {
     setVisibleSeasons((prev) => prev + 6);
   };
 
-  if (isLoading) {
-    return (
-      <div className={styles.loadingContainer}>
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className={styles.errorContainer}>
-        <ErrorDisplay message={error.message} />
-      </div>
-    );
-  }
-
   return (
-    <main>
+    <main id="main-content">
       <NavBar />
       <div className={styles.hero}>
         <div className={styles.container}>
@@ -50,38 +34,53 @@ const HomePage = () => {
                 season details and race results.
               </p>
             </div>
-            <div className={styles.yearRange}>
-              <CalendarDays className={styles.yearRangeIcon} />
-              <span className={styles.yearRangeText}>
-                {seasons.length > 0
-                  ? `${seasons[0].season} - ${
-                      seasons[seasons.length - 1].season
-                    }`
-                  : ""}
-              </span>
-            </div>
+            {!isLoading && seasons.length > 0 && (
+              <div className={styles.yearRange}>
+                <CalendarDays className={styles.yearRangeIcon} />
+                <span className={styles.yearRangeText}>
+                  {`${seasons[0].season} - ${seasons[seasons.length - 1].season}`}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
+
       <div className={styles.container}>
         <div className={styles.content}>
-          <div className={styles.grid}>
-            {seasons.slice(0, visibleSeasons).map((season) => (
-              <SeasonCard key={season.season} season={season} />
-            ))}
-          </div>
-
-          {visibleSeasons < seasons.length && (
-            <div className={styles.loadMoreContainer}>
-              <Button
-                onClick={handleLoadMore}
-                variant="outline"
-                className={styles.loadMoreButton}
-              >
-                Load More Seasons
-                <ChevronDown className={styles.loadMoreIcon} />
-              </Button>
+          {isLoading ? (
+            <div className={styles.loadingContainer}>
+              <LoadingSpinner size="lg" />
             </div>
+          ) : error ? (
+            <div className={styles.errorContainer}>
+              <ErrorDisplay message={error.message} />
+            </div>
+          ) : (
+            <>
+              <div className={styles.grid}>
+                {seasons.slice(0, visibleSeasons).map((season) => (
+                  <SeasonCard key={season.season} season={season} />
+                ))}
+              </div>
+
+              {visibleSeasons < seasons.length && (
+                <div className={styles.loadMoreContainer}>
+                  <Button
+                    onClick={handleLoadMore}
+                    variant="outline"
+                    className={styles.loadMoreButton}
+                    aria-label="Load more Formula 1 seasons"
+                  >
+                    Load More Seasons
+                    <ChevronDown
+                      className={styles.loadMoreIcon}
+                      aria-hidden="true"
+                    />
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

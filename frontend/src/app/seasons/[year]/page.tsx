@@ -1,10 +1,12 @@
 import React from "react";
+import { Metadata } from "next";
+import { Flag } from "lucide-react";
 import ErrorDisplay from "@/components/error-display";
 import ClientNavBar from "@/components/client-navbar";
 import ClientRaceResultsSection from "@/components/client-race-results-section";
 import ChampionStatsSection from "./components/champion-stats-section";
 import SeasonHeader from "./components/season-header";
-import { Flag } from "lucide-react";
+
 import styles from "./page.module.css";
 import { getSeasonData } from "../../../services/season-data";
 
@@ -20,7 +22,6 @@ const SeasonPage = async ({ params }: PageProps) => {
     const { currentSeason, raceResults, championStats } = await getSeasonData(
       resolvedParams.year
     );
-
     return (
       <main>
         <ClientNavBar />
@@ -35,12 +36,12 @@ const SeasonPage = async ({ params }: PageProps) => {
             <ChampionStatsSection stats={championStats} />
             <div className={styles.raceResultsSection}>
               <div className={styles.raceResultsHeader}>
-                <h2 className={styles.raceResultsTitle}>
-                  <Flag className={styles.raceResultsIcon} />
+                <h2 className={styles.raceResultsTitle} id="race-results">
+                  <Flag className={styles.raceResultsIcon} aria-hidden="true" />
                   Champions for the season races
                 </h2>
               </div>
-              <div className={styles.raceResultsContainer}>
+              <div className={styles.raceResultsContainer} aria-labelledby="race-results">
                 <ClientRaceResultsSection
                   loading={false}
                   error={null}
@@ -70,3 +71,28 @@ const SeasonPage = async ({ params }: PageProps) => {
 };
 
 export default SeasonPage;
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { year: string };
+}): Promise<Metadata> => {
+  const resolvedParams = await Promise.resolve(params);
+  const year = resolvedParams.year;
+
+  try {
+    const { currentSeason, championStats } = await getSeasonData(year);
+    const { givenName, familyName } = currentSeason.champion;
+    const title = `${year} Formula 1 Season - ${givenName} ${familyName}`;
+    const description = `View the ${year} Formula 1 season results, champion statistics, and race details. ${givenName} ${familyName} won the championship with ${championStats.driver.totalRaceWins} race wins and ${championStats.driver.totalPodiums} podiums.`;
+    return {
+      title,
+      description,
+    };
+  } catch {
+    return {
+      title: `${year} Formula 1 Season`,
+      description: `View the ${year} Formula 1 season results and statistics.`,
+    };
+  }
+};

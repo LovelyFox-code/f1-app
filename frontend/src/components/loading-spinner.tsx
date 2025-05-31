@@ -29,7 +29,6 @@ const LoadingSpinner = ({
         className={clx(styles.spinner, sizeClasses[size], className)}
         aria-hidden="true"
       />
-      <p className={styles.message}>Loading...</p>
     </div>
   );
 };

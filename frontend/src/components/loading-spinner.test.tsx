@@ -13,11 +13,6 @@ describe("LoadingSpinner", () => {
     expect(spinner).toHaveAttribute("aria-live", "polite");
   });
 
-  it("displays loading message", () => {
-    render(<LoadingSpinner />);
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
-  });
-
   it("applies custom className", () => {
     render(<LoadingSpinner className="custom-class" />);
     const spinner = screen.getByRole("status");
