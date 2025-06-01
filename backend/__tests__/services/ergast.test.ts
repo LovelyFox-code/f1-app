@@ -1,7 +1,9 @@
 import axios from "axios";
-import { fetchAndStoreSeasons, fetchAndStoreRaces, fetchAndStoreChampions } from "../../services/ergast.js";
 import { Season } from "../../models/season-model.js";
 import { Race } from "../../models/race-model.js";
+import { fetchAndStoreSeasons } from "../../services/season-service.ts";
+import { fetchAndStoreRaces } from "../../services/race-service.ts";
+import { fetchAndStoreChampions } from "../../services/season-champion-service.ts";
 
 // Mocks
 jest.mock("axios");
