@@ -1,13 +1,13 @@
 import { Race } from "../models/race-model.ts";
 import { Season } from "../models/season-model.ts";
-import { fetchWithRetry } from "../utils/api-utils.ts";
+import { fetchPaginatedResults } from "../utils/api-utils.ts";
 import pLimit from "p-limit";
 import * as dotenv from "dotenv";
 
 dotenv.config();
 
 const currentYear = new Date().getFullYear();
-const baseURL = process.env.ERGAST_API;
+const baseURL = process.env.ERGAST_API as string;
 const limit = pLimit(1);
 
 export const fetchAndStoreRaces = async () => {
@@ -19,14 +19,16 @@ export const fetchAndStoreRaces = async () => {
         const { season } = seasonObj;
 
         try {
-            const { data } = await limit(() =>
-                fetchWithRetry(`${baseURL}/${season}/results.json`)
+            const races = await limit(() =>
+                fetchPaginatedResults({
+                    baseUrl: baseURL,
+                    season: season,
+                    endpoint: "results",
+                    limitPerPage: 100,
+                })
             );
-
-            const races = data.MRData.RaceTable.Races;
-
             if (!races || races.length === 0) {
-                console.warn(`⚠️ No races found for season ${season}`);
+                console.warn(`No races found for season ${season}`);
                 continue;
             }
 
@@ -73,9 +75,11 @@ export const fetchAndStoreRaces = async () => {
 
             await Promise.all(raceTasks);
 
-            await Season.updateOne({ season }, { rounds: races.length });
-
-            console.log(`${races.length} races stored for season ${season}`);
+            // Update the season with the number of rounds. 
+            // We cannot rely on the race.length, since there might be duplicates due to the paginated fetch.
+            const maxRound = Math.max(...(races as any[]).map((r: any) => r.round));
+            console.log(`Updating season ${season} with max round ${maxRound}`);
+            await Season.updateOne({ season }, { rounds: maxRound });
         } catch (err) {
             console.error(`Error fetching races for season ${season}:`, err);
         }

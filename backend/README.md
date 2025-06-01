@@ -16,29 +16,6 @@ This is the backend service for the Formula 1 application, providing a RESTful A
 - MongoDB (v4.4 or higher)
 - npm or yarn package manager
 
-## Installation
-
-1. Clone the repository:
-
-```bash
-git clone <repository-url>
-cd formula-1/backend
-```
-
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-3. Create a `.env` file in the root directory with the following variables:
-
-```env
-PORT=3000
-MONGODB_URI=mongodb://localhost:27017/formula1
-NODE_ENV=development
-```
-
 ## Running the Application
 
 ### Development Mode
@@ -56,7 +33,7 @@ npm start
 
 ## API Documentation
 
-The API documentation is available at `/api/docs` when the server is running. It provides detailed information about all available endpoints, request/response formats, and example usage.
+The API documentation is available at `/api/docs` when the server is running or `docs/swagger.yaml` offline. It provides detailed information about all available endpoints, request/response formats, and example usage.
 
 ### Main Endpoints
 
@@ -95,7 +72,7 @@ backend/
 ├── docs/               # API documentation
 ├── models/            # Mongoose models
 ├── routes/            # Express routes
-├── services/          # Business logic
+├── services/          # Service layer of the application
 ├── app.ts            # Express application setup
 ├── server.ts         # Server entry point
 └── tsconfig.json     # TypeScript configuration

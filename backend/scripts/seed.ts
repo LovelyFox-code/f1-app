@@ -5,8 +5,9 @@ import { dirname } from "path";
 import * as path from "path";
 import { Season } from "../models/season-model.ts";
 import { Race } from "../models/race-model.ts";
-import { fetchAndStoreChampions, fetchAndStoreSeasons } from "../services/season-service.ts";
+import { fetchAndStoreSeasons } from "../services/season-service.ts";
 import { fetchAndStoreRaces } from "../services/race-service.ts";
+import { fetchAndStoreChampions } from "../services/season-champion-service.ts";
 
 
 const __filename = fileURLToPath(import.meta.url);
