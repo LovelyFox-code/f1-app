@@ -4,12 +4,21 @@ info:
   version: "1.0.0"
   description: Mock API based on Ergast Developer API structure for local development
 
+tags:
+  - name: Seasons
+    description: Endpoints for managing Formula 1 seasons and related data
+
 servers:
   - url: http://localhost:5001/api
+    description: Local development server
+  - url: https://formula-1-cn81.onrender.com/api
+    description: Production server
 
 paths:
   /seasons:
     get:
+      tags:
+        - Seasons
       summary: Get all seasons
       responses:
         "200":
@@ -17,6 +26,8 @@ paths:
 
   /seasons/{season}:
     get:
+      tags:
+        - Seasons
       summary: Get details for a specific season
       parameters:
         - name: season
@@ -32,6 +43,8 @@ paths:
 
   /seasons/{season}/races:
     get:
+      tags:
+        - Seasons
       summary: Get all races for a season
       parameters:
         - name: season

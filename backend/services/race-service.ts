@@ -1,0 +1,83 @@
+import { Race } from "../models/race-model.ts";
+import { Season } from "../models/season-model.ts";
+import { fetchWithRetry } from "../utils/api-utils.ts";
+import pLimit from "p-limit";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const currentYear = new Date().getFullYear();
+const baseURL = process.env.ERGAST_API;
+const limit = pLimit(1);
+
+export const fetchAndStoreRaces = async () => {
+    const seasons = await Season.find({
+        season: { $gte: "2005", $lte: currentYear.toString() },
+    });
+
+    for (const seasonObj of seasons) {
+        const { season } = seasonObj;
+
+        try {
+            const { data } = await limit(() =>
+                fetchWithRetry(`${baseURL}/${season}/results.json`)
+            );
+
+            const races = data.MRData.RaceTable.Races;
+
+            if (!races || races.length === 0) {
+                console.warn(`⚠️ No races found for season ${season}`);
+                continue;
+            }
+
+            const raceTasks = races.map((race: any) => limit(async () => {
+                try {
+                    const mappedResults = race.Results?.map((res: any) => ({
+                        number: res.number,
+                        position: res.position,
+                        positionText: res.positionText,
+                        points: res.points,
+                        driver: {
+                            driverId: res.Driver.driverId,
+                            givenName: res.Driver.givenName,
+                            familyName: res.Driver.familyName,
+                            nationality: res.Driver.nationality,
+                        },
+                        constructorName: {
+                            constructorId: res.Constructor.constructorId,
+                            name: res.Constructor.name,
+                            nationality: res.Constructor.nationality,
+                        },
+                    })) ?? [];
+
+                    await Race.findOneAndUpdate(
+                        { season: race.season, round: race.round },
+                        {
+                            season: race.season,
+                            round: race.round.toString(),
+                            raceName: race.raceName,
+                            date: race.date,
+                            time: race.time,
+                            circuit: {
+                                circuitId: race.Circuit.circuitId,
+                                circuitName: race.Circuit.circuitName,
+                            },
+                            results: mappedResults,
+                        },
+                        { upsert: true, new: true }
+                    );
+                } catch (error) {
+                    console.error(`Failed to store race ${race.round} of ${season}:`, error);
+                }
+            }));
+
+            await Promise.all(raceTasks);
+
+            await Season.updateOne({ season }, { rounds: races.length });
+
+            console.log(`${races.length} races stored for season ${season}`);
+        } catch (err) {
+            console.error(`Error fetching races for season ${season}:`, err);
+        }
+    }
+};

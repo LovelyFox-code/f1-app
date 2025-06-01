@@ -3,14 +3,10 @@ import * as dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import * as path from "path";
-
-import {
-    fetchAndStoreSeasons,
-    fetchAndStoreRaces,
-    fetchAndStoreChampions,
-} from "../services/ergast.ts";
 import { Season } from "../models/season-model.ts";
 import { Race } from "../models/race-model.ts";
+import { fetchAndStoreChampions, fetchAndStoreSeasons } from "../services/season-service.ts";
+import { fetchAndStoreRaces } from "../services/race-service.ts";
 
 
 const __filename = fileURLToPath(import.meta.url);

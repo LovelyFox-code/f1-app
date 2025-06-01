@@ -100,5 +100,3 @@ backend/
 ├── server.ts         # Server entry point
 └── tsconfig.json     # TypeScript configuration
 ```
-
-[Mermaid diagram](https://www.mermaidchart.com/raw/9c200bce-45e1-4dd7-b734-e4fb2d554713?theme=light&version=v0.1&format=svg)

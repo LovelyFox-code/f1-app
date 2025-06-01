@@ -2,6 +2,8 @@
 
 A web application that displays Formula 1 World Champions from 2005 to the present year, along with race winners and championship details.
 
+[Mermaid diagram](https://www.mermaidchart.com/raw/9c200bce-45e1-4dd7-b734-e4fb2d554713?theme=light&version=v0.1&format=svg)
+
 ## Features
 
 - View Formula 1 World Champions from 2005 to present
