@@ -148,10 +148,10 @@ describe("season-data service", () => {
     });
 
     it("should handle API errors", async () => {
-      const error = new Error("Failed to fetch races");
-      vi.mocked(apiService.getRaces).mockRejectedValueOnce(error);
+      const error = new Error("Failed to fetch season data");
+      vi.mocked(apiService.getSeasons).mockRejectedValueOnce(error);
 
-      await expect(getRacesWithResults("2023")).rejects.toThrow("Failed to fetch races");
+      await expect(getSeasonData("2023")).rejects.toThrow("Failed to fetch season data");
     });
   });
 
