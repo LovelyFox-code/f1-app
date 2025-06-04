@@ -7,6 +7,7 @@ dotenv.config();
 
 const currentYear = new Date().getFullYear();
 const baseURL = process.env.ERGAST_API;
+// Using p-limit to control concurrency and prevent overwhelming the external API
 const limit = pLimit(1);
 
 export const fetchAndStoreSeasons = async () => {

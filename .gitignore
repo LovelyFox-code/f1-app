@@ -24,7 +24,8 @@
 **/build
 **/dist
 
-**/.env*
+**/.env
+**/.env.production
 !.env.example
 
 # Vercel deployment files

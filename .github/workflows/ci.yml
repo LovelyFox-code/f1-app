@@ -39,14 +39,11 @@ jobs:
         run: npm test
 
       - name: Run backend tests
-        run: npm run test:backend || echo "No backend tests configured"
+        run: npm run test:backend
 
       - name: Build frontend
         working-directory: ./frontend
         run: npm run build
-
-      - name: Build backend
-        run: npm run build:backend || echo "No backend build configured"
 
       - name: Docker Buildx
         uses: docker/setup-buildx-action@v3

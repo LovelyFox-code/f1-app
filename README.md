@@ -73,6 +73,8 @@ formula-1/
 
 ### Backend
 
+[deployed on Render](https://formula-1-cn81.onrender.com/)
+
 The backend is built with:
 
 - Express.js
@@ -81,6 +83,8 @@ The backend is built with:
 - Swagger for API documentation
 
 ### Frontend
+
+[deployed on Vercel](https://formula-1-two.vercel.app/)
 
 The frontend is built with:
 
