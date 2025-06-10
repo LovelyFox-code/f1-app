@@ -24,7 +24,7 @@ A web application that displays Formula 1 World Champions from 2005 to the prese
 
    ```bash
    git clone <repository-url>
-   cd formula-1
+   cd f1-app
    ```
 
 2. Start the application using Docker Compose:
@@ -43,9 +43,8 @@ A web application that displays Formula 1 World Champions from 2005 to the prese
 
    ```bash
    # Start the backend
-   cd backend
    npm install
-   npm run dev
+   npm run start
 
    # Start the frontend
    cd frontend
