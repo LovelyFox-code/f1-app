@@ -22,7 +22,7 @@ It shows a list of F1 champions by season and race winners per season.
 
 ### Prerequisites
 
-- Node.js (>=16 recommended)
+- Node.js
 - npm or yarn
 - Backend API running locally or remotely
 
