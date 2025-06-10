@@ -16,7 +16,7 @@ This is the backend service for the Formula 1 application, providing a RESTful A
 - MongoDB (v4.4 or higher)
 - npm or yarn package manager
 
-## Running the Application
+## Running the Backend from root
 
 ```bash
 npm start
@@ -75,7 +75,7 @@ backend/
 
 1. **Express.js**
 
-   - **Decision**: Using Express.js 5 for the API server.
+   - **Decision**: Using Express.js for the API server.
    - **Reasoning**: Express provides a minimal, flexible framework that allows for precise control over the application structure while maintaining high performance. Its widespread adoption ensures good community support and a rich ecosystem of middleware.
    - **Trade-offs**: Express is lightweight and has a large ecosystem, but requires more manual setup compared to full frameworks like NestJS.
 
