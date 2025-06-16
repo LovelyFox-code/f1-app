@@ -1,29 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
-import apiService from "@/services/api";
 import { RaceResult } from "@/types/api";
+import { fetchRacesWithResults, getRetryLogic } from "@/utils/data-fetchers";
 
 export const useSeasonRaceResults = (year: string) => {
-  return useQuery<RaceResult[]>({
+  return useQuery<RaceResult[], Error>({
     queryKey: ["seasonResults", year],
     queryFn: async () => {
-      const racesData = await apiService.getRaces(year);
+      const results = await fetchRacesWithResults(year, "useSeasonRaceResults");
 
-      if (!racesData || racesData.length === 0) {
-        throw new Error("No races found for this season");
-      }
-
-      const resultsPromises = racesData.map(async (race) => {
-        const results = await apiService.getRaceResults(year, race.round);
-        return results.map((result) => ({
-          ...result,
-          round: race.round,
-          id: `${race.round}-${result.driver.givenName}-${result.driver.familyName}`,
-        }));
-      });
-
-      const results = await Promise.all(resultsPromises);
-      return results.flat();
+      return results.map((result) => ({
+        ...result,
+        id: `${result.round}-${result.driver.givenName}-${result.driver.familyName}`,
+      }));
     },
     staleTime: 1000 * 60 * 5,
+    enabled: !!year,
+    retry: getRetryLogic(),
   });
 };

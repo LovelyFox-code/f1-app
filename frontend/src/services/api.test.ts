@@ -3,6 +3,7 @@ import apiService from "./api";
 
 // Create mock function using hoisted
 const mockGet = vi.hoisted(() => vi.fn());
+const mockIsAxiosError = vi.hoisted(() => vi.fn().mockReturnValue(true));
 
 // Mock axios
 vi.mock("axios", () => ({
@@ -10,6 +11,7 @@ vi.mock("axios", () => ({
     create: () => ({
       get: mockGet,
     }),
+    isAxiosError: mockIsAxiosError,
   },
 }));
 
