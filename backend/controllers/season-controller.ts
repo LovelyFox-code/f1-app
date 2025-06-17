@@ -1,16 +1,12 @@
 import express from "express";
-import { Season } from "../models/season-model.ts";
 import { handleServerError, notFound } from "../utils/errors.ts";
+import { getAllSeasons as getAllSeasonsService, getSeasonByYear } from "../services/season-service.ts";
 
 const router = express.Router();
 
 export const getAllSeasons = router.get("/", (async (_req, res) => {
     try {
-        const currentYear = new Date().getFullYear();
-        const seasons = await Season.find({
-            season: { $gte: "2005", $lte: currentYear.toString() }
-        }).sort({ season: -1 });
-
+        const seasons = await getAllSeasonsService();
         res.json(seasons);
     } catch (err) {
         console.error("Error fetching seasons:", err);
@@ -22,7 +18,7 @@ export const getSeason = router.get("/:season", (async (req, res) => {
     const { season } = req.params;
 
     try {
-        const foundSeason = await Season.findOne({ season });
+        const foundSeason = await getSeasonByYear(season);
 
         if (!foundSeason) {
             return notFound(res, "Season");

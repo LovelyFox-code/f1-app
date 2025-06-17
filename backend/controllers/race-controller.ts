@@ -1,6 +1,6 @@
 import express from "express";
-import { Race } from "../models/race-model.ts";
 import { handleServerError, notFound } from "../utils/errors.ts";
+import { getRacesBySeason } from "../services/race-service.ts";
 
 const router = express.Router();
 
@@ -8,7 +8,7 @@ export const getRacesForSeason = router.get("/:season/races", (async (req, res) 
     const { season } = req.params;
 
     try {
-        const races = await Race.find({ season }).sort({ round: 1 });
+        const races = await getRacesBySeason(season);
 
         if (races.length === 0) {
             return notFound(res, "Races");

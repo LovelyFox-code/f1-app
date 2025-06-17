@@ -86,3 +86,12 @@ export const fetchAndStoreRaces = async () => {
         }
     }
 };
+
+/**
+ * Get all races for a specific season
+ * @param season The season year to get races for
+ * @returns Array of races sorted by round number
+ */
+export const getRacesBySeason = async (season: string) => {
+    return Race.find({ season }).sort({ round: 1 });
+};

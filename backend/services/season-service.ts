@@ -28,3 +28,23 @@ export const fetchAndStoreSeasons = async () => {
 
     console.log("Seasons stored");
 };
+
+/**
+ * Get all seasons from the database
+ * @returns Array of seasons sorted by year in descending order
+ */
+export const getAllSeasons = async () => {
+    const currentYear = new Date().getFullYear();
+    return Season.find({
+        season: { $gte: "2005", $lte: currentYear.toString() }
+    }).sort({ season: -1 });
+};
+
+/**
+ * Get a specific season by year
+ * @param season The season year to find
+ * @returns The season object or null if not found
+ */
+export const getSeasonByYear = async (season: string) => {
+    return Season.findOne({ season });
+};
