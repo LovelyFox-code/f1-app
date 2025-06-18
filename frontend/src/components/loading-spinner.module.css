@@ -3,11 +3,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-md);
+  padding: var(--spacing-sm);
 }
 
 .spinner {
   color: var(--primary);
+  -webkit-animation: spin 1s linear infinite;
   animation: spin 1s linear infinite;
 }
 
@@ -32,6 +33,15 @@
   font-size: var(--font-size-sm);
 }
 
+@-webkit-keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -39,4 +49,4 @@
   to {
     transform: rotate(360deg);
   }
-} 
+}
