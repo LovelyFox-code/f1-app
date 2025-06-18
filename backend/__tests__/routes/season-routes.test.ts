@@ -1,5 +1,11 @@
 import express from "express";
 import request from "supertest";
+
+// Mock p-limit before importing modules that use it
+jest.mock("p-limit", () => {
+  return () => (fn: () => Promise<any>) => fn();
+});
+
 import seasonRoutes from "../../routes/seasons-routes.ts";
 
 jest.mock("../../models/season-model.ts", () => ({

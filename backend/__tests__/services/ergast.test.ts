@@ -4,6 +4,7 @@ import { Race } from "../../models/race-model.js";
 import { fetchAndStoreSeasons } from "../../services/season-service.ts";
 import { fetchAndStoreRaces } from "../../services/race-service.ts";
 import { fetchAndStoreChampions } from "../../services/season-champion-service.ts";
+import pLimit from "p-limit";
 
 // Mocks
 jest.mock("axios");
@@ -53,12 +54,10 @@ describe("Ergast Service", () => {
 
   describe("fetchAndStoreRaces", () => {
     const mockSeason = { season: "2024" };
-    const raceEndpoint = "/2024/results.json";
-    const resultsEndpoint = "/2024/results.json?limit=100&offset=0";
-
     const mockRacesResponse = {
       data: {
         MRData: {
+          total: "1",
           RaceTable: {
             Races: [{
               season: "2024",
@@ -69,18 +68,7 @@ describe("Ergast Service", () => {
               Circuit: {
                 circuitId: "bahrain",
                 circuitName: "Bahrain International Circuit"
-              }
-            }]
-          }
-        }
-      }
-    };
-
-    const mockResultsResponse = {
-      data: {
-        MRData: {
-          RaceTable: {
-            Races: [{
+              },
               Results: [{
                 number: "44",
                 position: "1",
@@ -106,16 +94,18 @@ describe("Ergast Service", () => {
 
     beforeEach(() => {
       (Season.find as jest.Mock).mockResolvedValue([mockSeason]);
+      (Race.findOneAndUpdate as jest.Mock).mockResolvedValue({
+        season: "2024",
+        round: "1",
+        raceName: "Bahrain GP"
+      });
     });
 
     it("should fetch and store races successfully", async () => {
-      mockedAxios.get
-        .mockResolvedValueOnce(mockRacesResponse)
-        .mockResolvedValueOnce(mockResultsResponse);
+      mockedAxios.get.mockResolvedValueOnce(mockRacesResponse);
 
       await fetchAndStoreRaces();
 
-      expect(mockedAxios.get).toHaveBeenCalledWith(expect.stringContaining("/2024/results.json"));
       expect(mockedAxios.get).toHaveBeenCalledWith(expect.stringContaining("/2024/results.json"));
       expect(Race.findOneAndUpdate).toHaveBeenCalledWith(
         { season: "2024", round: 1 },
