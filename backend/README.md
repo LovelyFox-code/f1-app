@@ -117,3 +117,19 @@ backend/
 - Add health check endpoints for monitoring application status
 - Implement API versioning to support future changes without breaking existing clients
 - Add more comprehensive error handling with custom error classes
+
+## Request Validation
+
+The API uses express-validator for request validation. This ensures that all incoming requests meet the expected format and contain valid data before they reach the controllers.
+
+### How it works
+
+1. Validation rules are defined in the `middleware` directory:
+
+   - `validation.ts`: Contains the core validation middleware
+   - `season-validators.ts`: Contains validation rules for season-related endpoints
+   - `race-validators.ts`: Contains validation rules for race-related endpoints
+
+2. The validation middleware is applied to routes in `routes/seasons-routes.ts`
+
+3. When a request fails validation, a 400 Bad Request response is sent with detailed error information
