@@ -83,10 +83,13 @@ The backend is built with:
 
 ### Frontend
 
-[deployed on Vercel](https://formula-1-two.vercel.app/)
+[deployed on Vercel](https://formula-1-two.vercel.app/)  
+
 
 The frontend is built with:
 
 - Next.js
 - TypeScript
 - Module CSS
+
+<img width="562" alt="Screenshot 2025-06-20 at 14 57 39" src="https://github.com/user-attachments/assets/f24d31ae-c0e8-49ef-877f-7fcce7dd3930" />
