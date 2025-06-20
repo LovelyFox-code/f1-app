@@ -2,9 +2,7 @@ import express from "express";
 import { handleServerError, notFound } from "../utils/errors.ts";
 import { getRacesBySeason } from "../services/race-service.ts";
 
-const router = express.Router();
-
-export const getRacesForSeason = router.get("/:season/races", (async (req, res) => {
+export const getRacesForSeason = (async (req, res) => {
     const { season } = req.params;
 
     try {
@@ -19,4 +17,4 @@ export const getRacesForSeason = router.get("/:season/races", (async (req, res) 
         console.error("Error fetching races:", err);
         handleServerError(res, err);
     }
-}) as express.RequestHandler);
+}) as express.RequestHandler;
